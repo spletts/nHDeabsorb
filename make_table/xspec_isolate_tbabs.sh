@@ -5,13 +5,6 @@
 Isolate TBabs component and write it to a file with header: energy (keV), tbabs (unitless; from 'model y'),
 tbabs (unitless; from 'model model').
 The last two columns are identical.
-
-PARAMETERS
-----------
-See README.md in this folder.
-DAT_TBABS
-  * Table with explicit headers: energy_kev, tbabs_nh{NH}_model_model, tbabs_nh{NH}_model_y
-
 comment
 
 
