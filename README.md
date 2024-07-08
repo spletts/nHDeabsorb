@@ -12,14 +12,14 @@ This is used to deabsorb a spectrum.
 
 Call the function `get_absorption.xspec_absorb_component(ebin_min, ebin_max, fn_abs, nh=0.101)`:
 
-`ebin_min, ebin_max` are lists/arrays of the lower, upper bin edges in *keV* (respectively).
+**`ebin_min, ebin_max`** are lists/arrays of the lower, upper bin edges in *keV* (respectively).
 
-`fn_abs` is either 'tbabs_component.dat' or 'phabs_component.dat'. 
+**`fn_abs`** is either 'tbabs_component.dat' or 'phabs_component.dat'. 
 Use 'phabs_component.dat' if you used `phabs` in XSpec. 
 Use 'tbabs_component.dat' if you used `tbabs` with `abund wilm` in XSpec. 
-`tbabs` with `abund wilm`** which is the photoelectric absorption component $\exp(-\eta\sigma)$ using the Tuebingen-Boulder ISM absorption model and ISM abundances from [`wilm`](https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract).
+`tbabs` with `abund wilm` is the photoelectric absorption component $\exp(-\eta\sigma)$ using the Tuebingen-Boulder ISM absorption model and ISM abundances from [`wilm`](https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract).
 
-`nh` is the Hydrogen column density in units of $10^{22}$ cm<sup>-2</sup>. 
+**`nh`** is the Hydrogen column density in units of $10^{22}$ cm<sup>-2</sup>. 
 The files 'tbabs_component.dat' and 'phabs_component.dat' in this directory use $\eta_H = 0.101 \times 10^{22}$ 1/cm<sup>2</sup>, 
 so the default for `nh` is 0.101. 
 For using a nondefault `nh` see [User-specified nH](#User-specified-nH).
@@ -42,8 +42,8 @@ The absorption is evaluated at each end of the energy bin via interpolation of t
 `phabs_component.dat`:
 * Table with explicit headers: 
   * `energy_kev`: Energies in keV at which the **phabs** component is evaluated at. These are from `ebin_edges.txt`.
-  * `tbabs_nh{NH}_model_model`: **phabs** component calculated using fixed `{NH}` (a placeholder for the $\eta_H$ set in `make_tables/xspec_isolate_tbabs.sh`)
-  * `tbabs_nh{NH}_model_y`: **phabs** component calculated using fixed `{NH}`. `tbabs_nh{NH}_model_model` and `tbabs_nh{NH}_model_y` should be identical; the first uses XSpec's `tcloutr` with `model model` command to get the model values and the second uses `model y`. 
+  * `phabs_nh{NH}_model_model`: **phabs** component calculated using fixed `{NH}` (a placeholder for the $\eta_H$ set in `make_tables/xspec_isolate_tbabs.sh`)
+  * `phabs_nh{NH}_model_y`: **phabs** component calculated using fixed `{NH}`. `phabs_nh{NH}_model_model` and `phabs_nh{NH}_model_y` should be identical; the first uses XSpec's `tcloutr` with `model model` command to get the model values and the second uses `model y`. 
 
 `get_absorption.py`:
 * Script to isolate the absorption component. Also makes a plot of the isolated absorption component `plot_of_absorption.png`.
@@ -65,9 +65,9 @@ $p_1 = \exp( -\eta_1 \sigma(E) )$ where $\eta_1 = 0.101 \times 10^{22}$ 1/cm<sup
 
 $\Rightarrow \sigma(E) = - \frac{\ln(p_1)}{\eta_1}$
 
-The `tbabs` component can be evaluated as $\exp( -\eta_1 \sigma(E) )$ using the above equation for $\sigma(E)$:
+The `tbabs` component can be evaluated as $p_2 = \exp( -\eta_2 \sigma(E) )$ using the above equation for $\sigma(E)$:
 
-$p_2 = p_1^{\eta_2/\eta_2}$
+$p_2 = p_1^{\eta_2/\eta_1}$
 
 ## Acknowledgements
 
