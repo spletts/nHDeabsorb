@@ -88,7 +88,7 @@ Run the following command in the directory `nHDeabsorb`, which will create `abso
 #### Option 1 
 To evaluate `tbabs` at a different value, you can set `NH` in `make_tables/xspec_isolate_tbabs.sh` and rerun `xspec_isolate_tbabs.sh` (via `./xspec_isolate_tbabs.sh`) to rewrite the file `tbabs_component.dat`.
 
-#### Option 2
+#### Option 2 (implemented in this repo)
 The user can set `nh` in `get_absorption.xspec_absorb_component(ebin_min, ebin_max, fn_abs, nh=0.101)`
 (in units of $10^{22}$ cm<sup>-2</sup>).
 
