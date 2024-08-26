@@ -3,8 +3,8 @@
 
 ## About
 
-This directory has scripts for isolating the **Galactic** photoelectric/photoionization absorption component $\exp(-\eta\sigma)$ in XSpec
-and writing it to a table. 
+This directory has scripts for isolating the **Galactic** photoelectric/photoionization absorption component $\exp(-\eta\sigma)$ 
+in the range 0.3-10 keV in XSpec and writing it to a table. 
 Note $\sigma \equiv \sigma(E)$.
 To evaluate intrinsic absorption, evaluate $\sigma(E)$ at $E(1+z)$ (as described in the XSpec Manual Sec 6.3.24). 
 
@@ -52,8 +52,8 @@ and one optional command line arg `fn_output`:
 * `fn_output`: the default is `absorption.csv`
   * Filename of output data file which contains the energy bin centers (in keV) in the first
                         column, and the energy bin width (in keV) in the second column, and the corresponding
-                        absorption component in the third a nd final column. This comma-separated file has header
-                        energy_keV,ebin_width_keV,absorption
+                        absorption component in the third and final column. Energies outside the range 0.3-10 keV have absorption=1 (corresponding to no absorption). 
+                        This comma-separated file has header: energy_keV,ebin_width_keV,absorption.
 ## Example
 
 Run the following command in the directory `nHDeabsorb`, which will create `absorption.csv`

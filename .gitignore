@@ -1,1 +1,8 @@
 .idea/
+get_absorption.logging
+absorption.csv
+plot_of_absorption.png
+__pycache__/
+make_absorption_plots.py
+_test_binning/
+_test_absorb/

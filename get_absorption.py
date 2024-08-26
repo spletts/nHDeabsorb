@@ -16,6 +16,9 @@ PARSER = argparse.ArgumentParser(
     description='Evaluate the photoionization absorption component given specific energy bins (in keV)',
     epilog='')
 ABSORPTION_DICT = {'phabs': 'phabs_component.dat', 'tbabs_abund_wilm': 'tbabs_abund_wilm_component.dat'}
+# Energy ranges (keV) which are affected by absorption
+MIN_ABSORPTION_ENERGY = 0.3
+MAX_ABSORPTION_ENERGY = 10.0
 HDR_OUT = 'energy_keV,ebin_width_keV,absorption'
 PARSER.add_argument('absorption_model', type=str, help=f'Valid options are: {ABSORPTION_DICT.keys()}.')
 PARSER.add_argument('nH', type=float, help='Hydrogen column density in units of 10^22 1/cm^2.')
@@ -27,7 +30,8 @@ PARSER.add_argument('fn_energy_data', type=str,
 PARSER.add_argument('--fn_output', type=str, default='absorption.csv',
                     help=f'Filename of output data file which contains the energy bin centers (in keV) in the first '
                          f'column, and the energy bin width (in keV) in the second column, and the corresponding '
-                         f'absorption component in the third a nd final column. '
+                         f'absorption component in the third a nd final column. Energies outside the range 0.3-10 keV '
+                         f'have absorption=1 (corresponding to no absorption).'
                          f'This comma-separated file has header {HDR_OUT}')
 
 ARGS = PARSER.parse_args()
@@ -75,8 +79,10 @@ def interpolate_absorption(en, fn_abs):
 
 
 def xspec_absorption_component(ebin_min, ebin_max, fn_abs, nh=0.101):
-    """Calculate the absorption value that XSpec uses in each ennergy bin, which is the average of the absorption
+    """Calculate the absorption value that XSpec uses in each energy bin, which is the average of the absorption
     at the bin edges.
+
+    The absorption outside 0.3-10 keV is set to 1 (no absorption).
 
     'Tbabs evaluates the cross-section at each end of the energy bin and averages them.'
     -Kieth via xspec12@athena.gsfc.nasa.gov
@@ -100,10 +106,17 @@ def xspec_absorption_component(ebin_min, ebin_max, fn_abs, nh=0.101):
     array_like[float] or float
     """
 
+    # idx_no_absorb = np.where((ebin_min < 0.3) | (ebin_max > 10))
+
     # Get absorption at the bin edges, and take average of each bin
     abs_at_emin = interpolate_absorption(ebin_min, fn_abs)
     abs_at_emax = interpolate_absorption(ebin_max, fn_abs)
     abs_bin_avg = np.average((abs_at_emin, abs_at_emax), axis=0)
+
+    # Check for energies outside the absorption range, and set absorption to 1 (no absorption)
+    for i, _ in enumerate(abs_at_emin):
+        if ebin_min[i] < MIN_ABSORPTION_ENERGY or ebin_max[i] > MAX_ABSORPTION_ENERGY:
+            abs_bin_avg[i] = 1
 
     # absorb2 = absorb1^(nH2/nH1); see README.md
     if nh != 0.101:
