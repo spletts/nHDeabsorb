@@ -3,9 +3,10 @@
 
 ## About
 
-This directory has scripts for isolating the photoelectric/photoionization absorption component $\exp(-\eta\sigma)$ in XSpec
+This directory has scripts for isolating the **Galactic** photoelectric/photoionization absorption component $\exp(-\eta\sigma)$ in XSpec
 and writing it to a table. 
-Note $\sigma \equiv \sigma(E)$. 
+Note $\sigma \equiv \sigma(E)$.
+To evaluate intrinsic absorption, evaluate $\sigma(E)$ at $E(1+z)$ (as described in the XSpec Manual Sec 6.3.24). 
 
 This is used to deabsorb a spectrum by dividing the observed flux by the absorption component.
 
@@ -20,20 +21,18 @@ usage: get_absorption.py [-h] [--fn_output FN_OUTPUT] absorption_model nH fn_ene
 Evaluate the photoionization absorption component given specific energy bins (in keV)
 
 positional arguments:
-  absorption_model      Valid options are: dict_keys(['phabs', 'tbabs_abdund_wilm']).
+  absorption_model      Valid options are: dict_keys(['phabs', 'tbabs_abund_wilm']).
   nH                    Hydrogen column density in units of 10^22 1/cm^2.
-  fn_energy_data        Filename of data file which contains the energy bin centers (in keV) in the first column,
-                        and the energy bin width (in keV) in the second column. This file must not have a header
-                        (to change this behavior edit `skip_header`). This file can have any number of columns, as
-                        only the first two are read.
+  fn_energy_data        Filename of data file which contains the energy bin centers (in keV) in the first column and the energy bin width (in
+                        keV) in the second column. This file must not have a header (to change this behavior see the docstring for
+                        `make_absorption_table`). This file can have any number of columns, as only the first two are read.
 
 optional arguments:
   -h, --help            show this help message and exit
   --fn_output FN_OUTPUT
-                        Filename of output data file which contains the energy bin centers (in keV) in the first
-                        column, and the energy bin width (in keV) in the second column, and the corresponding
-                        absorption component in the third a nd final column. This comma-separated file has header
-                        energy_keV,ebin_width_keV,absorption
+                        Filename of output data file which contains the energy bin centers (in keV) in the first column, and the energy bin width
+                        (in keV) in the second column, and the corresponding absorption component in the third a nd final column. This comma-
+                        separated file has header energy_keV,ebin_width_keV,absorption
 ```
 
 Reiterating the above:
