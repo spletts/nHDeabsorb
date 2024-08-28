@@ -30,7 +30,7 @@ PARSER.add_argument('fn_energy_data', type=str,
 PARSER.add_argument('--fn_output', type=str, default='absorption.csv',
                     help=f'Filename of output data file which contains the energy bin centers (in keV) in the first '
                          f'column, and the energy bin width (in keV) in the second column, and the corresponding '
-                         f'absorption component in the third a nd final column. Energies outside the range 0.3-10 keV '
+                         f'absorption component in the third and final column. Energies outside the range 0.3-10 keV '
                          f'have absorption=1 (corresponding to no absorption).'
                          f'This comma-separated file has header {HDR_OUT}')
 

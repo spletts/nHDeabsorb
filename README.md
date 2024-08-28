@@ -10,6 +10,14 @@ To evaluate intrinsic absorption, evaluate $\sigma(E)$ at $E(1+z)$ (as described
 
 This is used to deabsorb a spectrum by dividing the observed flux by the absorption component.
 
+## Requirements
+
+* Python 3 (uses `f'{varable_name}'` string formatting)
+* argparse
+* logging
+* sys
+* numpy
+
 ## Usage
 
 The output of this repo is `fn_output`, which is a table that contains the absorption component in specific energy bins.
@@ -31,7 +39,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --fn_output FN_OUTPUT
                         Filename of output data file which contains the energy bin centers (in keV) in the first column, and the energy bin width
-                        (in keV) in the second column, and the corresponding absorption component in the third a nd final column. This comma-
+                        (in keV) in the second column, and the corresponding absorption component in the third and final column. This comma-
                         separated file has header energy_keV,ebin_width_keV,absorption
 ```
 
@@ -60,6 +68,16 @@ Run the following command in the directory `nHDeabsorb`, which will create `abso
 
 ```shell
 [nHDeabsorb]$  python get_absorption.py tbabs_abund_wilm 0.157 sample_sed.dat
+```
+
+
+You can also run this from a Python script in another directory via
+```python
+import subprocess
+
+PATH_TO_REPO = "/home/vhep/mspletts/swift_xrt/nHDeabsorb"
+subprocess.Popen(['python', 'get_absorption.py', 'tbabs_abund_wilm', '0.157', 'sample_sed.dat'], cwd=PATH_TO_REPO,
+                         shell=False).wait()
 ```
 
 ---
