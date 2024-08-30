@@ -12,7 +12,7 @@ This is used to deabsorb a spectrum by dividing the observed flux by the absorpt
 
 ## Requirements
 
-* Python 3 (uses `f'{varable_name}'` string formatting)
+* Python 3 (uses `f'{variable_name}'` string formatting)
 * argparse
 * logging
 * sys
@@ -20,7 +20,7 @@ This is used to deabsorb a spectrum by dividing the observed flux by the absorpt
 
 ## Usage
 
-The output of this repo is `fn_output`, which is a table that contains the absorption component in specific energy bins.
+The output of this repo is `fn_output` (optional command line argument with default `./absorption.csv`), which is a table that contains the absorption component in specific energy bins.
 
 ```powershell
 [nHDeabsorb]$  python get_absorption.py --help
@@ -40,19 +40,20 @@ optional arguments:
   --fn_output FN_OUTPUT
                         Filename of output data file which contains the energy bin centers (in keV) in the first column, and the energy bin width
                         (in keV) in the second column, and the corresponding absorption component in the third and final column. This comma-
-                        separated file has header energy_keV,ebin_width_keV,absorption
+                        separated file has explicit header energy_keV,ebin_width_keV,absorption
 ```
 
 Reiterating the above:
 
 There are three required command line args (`absorption_model nH fn_energy_data`) 
 and one optional command line arg `fn_output`:
-* `absorption_model`: which absorption model to apply.
+* `absorption_model`: which absorption model from XSpec to apply.
   * Valid options are `'phabs', 'tbabs_abdund_wilm'`
-    * `tbabs` with `abund wilm` is the photoelectric absorption component $\exp(-\eta\sigma)$ using the Tuebingen-Boulder ISM absorption model and ISM abundances from [`wilm`](https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract).
-* `nH`: Hydrogen column density **in units of 10^22 cm<sup>-2</sup>**.
+    * `phabs`: XSpec's `phabs` command
+      * `tbabs` with `abund wilm`: XSpec's `tbabs` command with `abund wilm` set. This is the photoelectric absorption component $\exp(-\eta\sigma)$ using the Tuebingen-Boulder ISM absorption model and ISM abundances from [`wilm`](https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract).
+* `nH`: Hydrogen column density **in units of 10<sup>22</sup> cm<sup>-2</sup>**.
   * The files 'tbabs_abund_wilm_component.dat' and 'phabs_component.dat' in this directory use $\eta_H = 0.101 \times 10^{22}$ 1/cm<sup>2</sup>
-* `fn_energy_data`: filename for SED data which must have
+* `fn_energy_data`: filename for SED data which must have:
   * No header (to change this behavior, edit `skip_header` in `make_absorption_table`)
   * Energy in keV in the first column (to change this requirement, edit `energy = data[:, 0]` with the relevant index in `make_absorption_table`)
   * Energy bin width in keV in the second column (to change this requirement, edit `ebin_width = data[:, 1]` with the relevant index in `make_absorption_table`)
@@ -61,7 +62,7 @@ and one optional command line arg `fn_output`:
   * Filename of output data file which contains the energy bin centers (in keV) in the first
                         column, and the energy bin width (in keV) in the second column, and the corresponding
                         absorption component in the third and final column. Energies outside the range 0.3-10 keV have absorption=1 (corresponding to no absorption). 
-                        This comma-separated file has header: energy_keV,ebin_width_keV,absorption.
+                        This comma-separated file has explicit ^header: energy_keV,ebin_width_keV,absorption.
 ## Example
 
 Run the following command in the directory `nHDeabsorb`, which will create `absorption.csv`
