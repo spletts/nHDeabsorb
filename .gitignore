@@ -1,4 +1,5 @@
 .idea/
+tests/
 get_absorption.logging
 absorption.csv
 plot_of_absorption.png
