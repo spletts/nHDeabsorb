@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nHDeabsorb"
+description = "Calculate nH absorption in order to deabsorb an SED"
+version = "0.1.0"
+readme = "README.md"
+dependencies = ["numpy"]
+
+[project.urls]
+Repository = "https://github.com/spletts/nHDeabsorb"
