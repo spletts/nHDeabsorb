@@ -7,7 +7,17 @@ name = "nHDeabsorb"
 description = "Calculate nH absorption in order to deabsorb an SED"
 version = "0.1.0"
 readme = "README.md"
-dependencies = ["numpy"]
+dependencies = ["numpy<=1.25.2"]
+requires-python = ">=3.0"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+mypkg = ["*.dat"]
 
 [project.urls]
 Repository = "https://github.com/spletts/nHDeabsorb"
