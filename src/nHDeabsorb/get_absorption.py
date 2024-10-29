@@ -1,12 +1,12 @@
 """
 Get the photoionization absorption component given specific energy bins (in keV) and save to a table.
 
-Command line parameters are written to log file get_absorption.logging
 The filename of the table created is written to log file get_absorption.logging
 """
 
 import argparse
 import logging
+import pkg_resources
 import sys
 
 import numpy as np
@@ -20,28 +20,8 @@ ABSORPTION_DICT = {'phabs': 'phabs_component.dat', 'tbabs_abund_wilm': 'tbabs_ab
 MIN_ABSORPTION_ENERGY = 0.3
 MAX_ABSORPTION_ENERGY = 10.0
 HDR_OUT = 'energy_keV,ebin_width_keV,absorption'
-PARSER.add_argument('absorption_model', type=str, help=f'Valid options are: {ABSORPTION_DICT.keys()}.')
-PARSER.add_argument('nH', type=float, help='Hydrogen column density in units of 10^22 1/cm^2.')
-PARSER.add_argument('fn_energy_data', type=str,
-                    help='Filename of data file which contains the energy bin centers (in keV) in the first column '
-                         'and the energy bin width (in keV) in the second column. This file must not have a header '
-                         '(to change this behavior see the docstring for `make_absorption_table`). This file can have any number of columns, '
-                         'as only the first two are read.')
-PARSER.add_argument('--fn_output', type=str, default='absorption.csv',
-                    help=f'Filename of output data file which contains the energy bin centers (in keV) in the first '
-                         f'column, and the energy bin width (in keV) in the second column, and the corresponding '
-                         f'absorption component in the third and final column. Energies outside the range 0.3-10 keV '
-                         f'have absorption=1 (corresponding to no absorption).'
-                         f'This comma-separated file has header {HDR_OUT}')
-
-ARGS = PARSER.parse_args()
-ABSORPTION_MODEL = ARGS.absorption_model
-NH = ARGS.nH
-FN_ENERGY_DATA = ARGS.fn_energy_data
-FN_OUT = ARGS.fn_output
 LOG_FN = 'get_absorption.logging'
 logging.basicConfig(filename=LOG_FN, filemode='w', level=logging.DEBUG)
-logging.info(f'Command line args which were used: {ARGS}')
 
 
 def interpolate_absorption(en, fn_abs):
@@ -158,7 +138,7 @@ def make_absorption_table(fn_sed_data, absorption_model, nh, fn_out):
         logging.info(err_msg)
         sys.exit(err_msg)
     else:
-        fn_abs = ABSORPTION_DICT[absorption_model]
+        fn_abs = pkg_resources.resource_filename(__name__, ABSORPTION_DICT[absorption_model])
         abs_bin_avg = xspec_absorption_component(ebin_min, ebin_max, fn_abs, nh)
         np.savetxt(fn_out, np.c_[energy, ebin_width, abs_bin_avg], delimiter=',', comments='',
                    header='energy_keV,ebin_width_keV,absorption')
@@ -166,6 +146,3 @@ def make_absorption_table(fn_sed_data, absorption_model, nh, fn_out):
 
     return None
 
-
-if __name__ == "__main__":
-    make_absorption_table(FN_ENERGY_DATA, ABSORPTION_MODEL, NH, FN_OUT)
