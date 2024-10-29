@@ -3,6 +3,7 @@ tests/
 *logging
 *csv
 dist/
+src/nHDeabsorb.egg*
 src/nHDeabsorb/get_absorption.logging
 src/nHDeabsorb/absorption.csv
 src/nHDeabsorb/plot_of_absorption.png
