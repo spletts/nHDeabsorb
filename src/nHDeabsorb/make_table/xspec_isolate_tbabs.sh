@@ -16,7 +16,7 @@ TRASHDIR="/home/vhep/mspletts/Trash"
 NH=0.101
 
 
-DAT_TBABS="../tbabs_component.dat"
+DAT_TBABS="../tbabs_abund_wilm_component.dat"
 ENERGYBINS="ebin_edges.txt"
 LOG="_xspec_tbabs.log"
 
