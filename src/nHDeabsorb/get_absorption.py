@@ -144,5 +144,5 @@ def make_absorption_table(fn_sed_data, absorption_model, nh, fn_out):
                    header='energy_keV,ebin_width_keV,absorption')
         logging.info(f'Wrote {fn_out}')
 
-    return None
+    return abs_bin_avg 
 
