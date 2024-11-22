@@ -3,6 +3,7 @@ Name: nHDeabsorb
 Version: 0.1.0
 Summary: Calculate nH absorption in order to deabsorb an SED
 Project-URL: Repository, https://github.com/spletts/nHDeabsorb
+Requires-Python: >=3.0
 Description-Content-Type: text/markdown
 
 # `nH Deabsorb`
@@ -10,101 +11,76 @@ Description-Content-Type: text/markdown
 
 ## About
 
-This directory has scripts for isolating the **Galactic** photoelectric/photoionization absorption component $\exp(-\eta\sigma)$ 
+This package has scripts for isolating the **Galactic** photoelectric/photoionization absorption component $\exp(-\eta\sigma)$ 
 in the range 0.3-10 keV in XSpec and writing it to a table. 
 Note $\sigma \equiv \sigma(E)$.
 To evaluate intrinsic absorption, evaluate $\sigma(E)$ at $E(1+z)$ (as described in the XSpec Manual Sec 6.3.24). 
 
 This is used to deabsorb a spectrum by dividing the observed flux by the absorption component.
 
-## Requirements
+## Install and Requirements
 
-* Python 3 (uses `f'{variable_name}'` string formatting)
-* argparse
-* logging
-* sys
-* numpy
+This is a very light package. You can pull the repository and implement it into your own already-existing analysis pipelines. You should only need parts of the following files (take care to update the paths and imports):
+* src/nHDeabsorb/get_absorption.py
+* src/nHDeabsorb/phabs_component.dat or src/nHDeabsorb/tbabs_abund_wilm_component.dat
 
-## Usage
-
-The output of this repo is `fn_output` (optional command line argument with default `./absorption.csv`), which is a table that contains the absorption component in specific energy bins.
-
-```powershell
-[nHDeabsorb]$  python get_absorption.py --help
-usage: get_absorption.py [-h] [--fn_output FN_OUTPUT] absorption_model nH fn_energy_data
-
-Evaluate the photoionization absorption component given specific energy bins (in keV)
-
-positional arguments:
-  absorption_model      Valid options are: dict_keys(['phabs', 'tbabs_abund_wilm']).
-  nH                    Hydrogen column density in units of 10^22 1/cm^2.
-  fn_energy_data        Filename of data file which contains the energy bin centers (in keV) in the first column and the energy bin width (in
-                        keV) in the second column. This file must not have a header (to change this behavior see the docstring for
-                        `make_absorption_table`). This file can have any number of columns, as only the first two are read.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --fn_output FN_OUTPUT
-                        Filename of output data file which contains the energy bin centers (in keV) in the first column, and the energy bin width
-                        (in keV) in the second column, and the corresponding absorption component in the third and final column. This comma-
-                        separated file has explicit header energy_keV,ebin_width_keV,absorption
+Or you can use it as a package by pulling the repo and 
+```
+python -m build
+pip install dist/nHDeabsorb-0.1.0-py3-none-any.whl
 ```
 
-Reiterating the above:
+Requirements: 
 
-There are three required command line args (`absorption_model nH fn_energy_data`) 
-and one optional command line arg `fn_output`:
+* Python 3 (uses `f'{variable_name}'` string formatting)
+* numpy<=1.25.2. There are some numpy and scipy version conflicts which are the reason for this numpy version.
+
+## Usage and Example
+
+The output of this repo is `fn_out`: Filename of output data file which contains the energy bin centers (in keV) in the first column, and the energy bin width
+                        (in keV) in the second column, and the corresponding absorption component in the third and final column. This comma-
+                        separated file has explicit header energy_keV,ebin_width_keV,absorption. 
+
+Example:
+```powershell
+ [nHDeabsorb]$  python call_get_absorption.py
+```
+
+This script calls `get_absorption.make_absorption_table`. See the docstring for parameter definitions, but they are also below:
 * `absorption_model`: which absorption model from XSpec to apply.
   * Valid options are `'phabs', 'tbabs_abdund_wilm'`
     * `phabs`: XSpec's `phabs` command
       * `tbabs` with `abund wilm`: XSpec's `tbabs` command with `abund wilm` set. This is the photoelectric absorption component $\exp(-\eta\sigma)$ using the Tuebingen-Boulder ISM absorption model and ISM abundances from [`wilm`](https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract).
-* `nH`: Hydrogen column density **in units of 10<sup>22</sup> cm<sup>-2</sup>**.
+* `nh`: Hydrogen column density **in units of 10<sup>22</sup> cm<sup>-2</sup>**.
   * The files 'tbabs_abund_wilm_component.dat' and 'phabs_component.dat' in this directory use $\eta_H = 0.101 \times 10^{22}$ 1/cm<sup>2</sup>
-* `fn_energy_data`: filename for SED data which must have:
+* `fn_sed_data`: filename for SED data which must have:
   * No header (to change this behavior, edit `skip_header` in `make_absorption_table`)
   * Energy in keV in the first column (to change this requirement, edit `energy = data[:, 0]` with the relevant index in `make_absorption_table`)
   * Energy bin width in keV in the second column (to change this requirement, edit `ebin_width = data[:, 1]` with the relevant index in `make_absorption_table`)
   * Note that the remaining columns are not read.
-* `fn_output`: the default is `absorption.csv`
+* `fn_out`: the default is `absorption.csv`
   * Filename of output data file which contains the energy bin centers (in keV) in the first
                         column, and the energy bin width (in keV) in the second column, and the corresponding
                         absorption component in the third and final column. Energies outside the range 0.3-10 keV have absorption=1 (corresponding to no absorption). 
                         This comma-separated file has explicit ^header: energy_keV,ebin_width_keV,absorption.
-## Example
-
-Run the following command in the directory `nHDeabsorb`, which will create `absorption.csv`
-
-```shell
-[nHDeabsorb]$  python get_absorption.py tbabs_abund_wilm 0.157 sample_sed.dat
-```
-
-
-You can also run this from a Python script in another directory via
-```python
-import subprocess
-
-PATH_TO_REPO = "/home/vhep/mspletts/swift_xrt/nHDeabsorb"
-subprocess.Popen(['python', 'get_absorption.py', 'tbabs_abund_wilm', '0.157', 'sample_sed.dat'], cwd=PATH_TO_REPO,
-                         shell=False).wait()
-```
 
 ---
 
 ### Folder contents
 
-`tbabs_abund_wilm_component.dat`:
+`src/nHDeabsorb/tbabs_abund_wilm_component.dat`:
 * Table with explicit headers: 
   * `energy_kev`: Energies in keV at which the **TBabs component with `abund wilm`** is evaluated at. These are from `ebin_edges.txt`.
   * `tbabs_nh{NH}_model_model`: **TBabs component (with `abund wilm`)** calculated using fixed `{NH}` (a placeholder for the $\eta_H$ set in `make_tables/xspec_isolate_tbabs.sh`)
   * `tbabs_nh{NH}_model_y`: **TBabs component (with `abund wilm`)** calculated using fixed `{NH}`. `tbabs_nh{NH}_model_model` and `tbabs_nh{NH}_model_y` should be identical; the first uses XSpec's `tcloutr` with `model model` command to get the model values and the second uses `model y`. 
 
-`phabs_component.dat`:
+`src/nHDeabsorb/phabs_component.dat`:
 * Table with explicit headers: 
   * `energy_kev`: Energies in keV at which the **phabs** component is evaluated at. These are from `ebin_edges.txt`.
   * `phabs_nh{NH}_model_model`: **phabs** component calculated using fixed `{NH}` (a placeholder for the $\eta_H$ set in `make_tables/xspec_isolate_tbabs.sh`)
   * `phabs_nh{NH}_model_y`: **phabs** component calculated using fixed `{NH}`. `phabs_nh{NH}_model_model` and `phabs_nh{NH}_model_y` should be identical; the first uses XSpec's `tcloutr` with `model model` command to get the model values and the second uses `model y`. 
 
-`sample_sed.dat`:
+`src/nHDeabsorb/sample_sed.dat`:
 * Data table with implicit header: energy (keV), energy half bin width (keV), energy flux (keV/cm<sup>2</sup>/s), energy flux error (keV/<sup>2</sup>/s), model energy flux (keV/<sup>2</sup>/s)
 
 ---
@@ -112,7 +88,7 @@ subprocess.Popen(['python', 'get_absorption.py', 'tbabs_abund_wilm', '0.157', 's
 ### User-specified nH
 
 #### Option 1 
-To evaluate `tbabs` at a different value, you can set `NH` in `make_tables/xspec_isolate_tbabs.sh` and rerun `xspec_isolate_tbabs.sh` (via `./xspec_isolate_tbabs.sh`) to rewrite the file `tbabs_component.dat`.
+To evaluate `tbabs` at a different value, you can set `NH` in `src/nHDeabsorb/make_tables/xspec_isolate_tbabs.sh` and rerun `xspec_isolate_tbabs.sh` (via `./xspec_isolate_tbabs.sh`) to rewrite the file `tbabs_component.dat`.
 
 #### Option 2 (implemented in this repo)
 The user can set `nh` in `get_absorption.xspec_absorb_component(ebin_min, ebin_max, fn_abs, nh=0.101)`

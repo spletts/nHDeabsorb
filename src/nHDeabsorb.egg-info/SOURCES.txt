@@ -1,7 +1,11 @@
+MANIFEST.in
 README.md
 pyproject.toml
 src/nHDeabsorb/get_absorption.py
 src/nHDeabsorb/make_absorption_plots.py
+src/nHDeabsorb/phabs_component.dat
+src/nHDeabsorb/sample_sed.dat
+src/nHDeabsorb/tbabs_abund_wilm_component.dat
 src/nHDeabsorb.egg-info/PKG-INFO
 src/nHDeabsorb.egg-info/SOURCES.txt
 src/nHDeabsorb.egg-info/dependency_links.txt

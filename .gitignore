@@ -2,6 +2,7 @@
 tests/
 *logging
 *csv
+*png
 dist/
 src/nHDeabsorb.egg*
 src/nHDeabsorb/get_absorption.logging
