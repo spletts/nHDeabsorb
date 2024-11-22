@@ -58,7 +58,7 @@ def interpolate_absorption(en, fn_abs):
     return y
 
 
-def xspec_absorption_component(ebin_min, ebin_max, fn_abs, nh=0.101):
+def xspec_absorption_component(ebin_min, ebin_max, absorption_model, nh=0.101):
     """Calculate the absorption value that XSpec uses in each energy bin, which is the average of the absorption
     at the bin edges.
 
@@ -74,9 +74,10 @@ def xspec_absorption_component(ebin_min, ebin_max, fn_abs, nh=0.101):
         Lower bin edges in keV
     ebin_max : array_like[float]  or float
         Upper bin edges in keV
-    fn_abs : str
-        File with implicit headers: energy (in keV), corresponding absorption component values
-        Valid options - phabs_component.dat, tbabs_abund_wilm_component.dat
+    absorption_model : str
+        Which absorption model to calculate.
+        Valid options - tbabs_abdund_wilm, phabs
+        which correspond to the XSpec commmands >tbabs >abund wilm and >phabs
     nh : float
         Hydrogen column density in **units of 10^22 atoms/cm^2**
         The default 0.101 was used to create the tables phabs_component.dat and tbabs_abund_wilm_component.dat
@@ -85,6 +86,8 @@ def xspec_absorption_component(ebin_min, ebin_max, fn_abs, nh=0.101):
     -------
     array_like[float] or float
     """
+
+    fn_abs = pkg_resources.resource_filename(__name__, ABSORPTION_DICT[absorption_model])
 
     # idx_no_absorb = np.where((ebin_min < 0.3) | (ebin_max > 10))
 
@@ -138,8 +141,7 @@ def make_absorption_table(fn_sed_data, absorption_model, nh, fn_out):
         logging.info(err_msg)
         sys.exit(err_msg)
     else:
-        fn_abs = pkg_resources.resource_filename(__name__, ABSORPTION_DICT[absorption_model])
-        abs_bin_avg = xspec_absorption_component(ebin_min, ebin_max, fn_abs, nh)
+        abs_bin_avg = xspec_absorption_component(ebin_min, ebin_max, absorption_model, nh)
         np.savetxt(fn_out, np.c_[energy, ebin_width, abs_bin_avg], delimiter=',', comments='',
                    header='energy_keV,ebin_width_keV,absorption')
         logging.info(f'Wrote {fn_out}')
