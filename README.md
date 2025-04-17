@@ -7,8 +7,11 @@ This package has scripts for isolating the **Galactic** photoelectric/photoioniz
 in the range 0.3-10 keV in XSpec and writing it to a table. 
 Note $\sigma \equiv \sigma(E)$.
 To evaluate intrinsic absorption, evaluate $\sigma(E)$ at $E(1+z)$ (as described in the XSpec Manual Sec 6.3.24). 
-
 This is used to deabsorb a spectrum by dividing the observed flux by the absorption component.
+
+How the Galactic photoelectric/photoionization absorption component is isolated:
+* A Table is created, with XSpec, of Galactic absorption component values, using small energy bins. This is done to indirectly access whichever formula for the cross section that XSpec uses.
+* Because the absorption value that XSpec uses in each energy bin is the average of the absorption at the bin edges, the Table is _interpolated_ to get the absorption at each bin edge. In each bin, the reported absorption value (`absorption` column in `fn_out`) is the average of the values at the edges.
 
 ## Install and Requirements
 
