@@ -5,7 +5,7 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-import nHDeabsorb
+#import nHDeabsorb
 
 project = 'nHDeabsorb'
 copyright = '2025, Megan Splettstoesser'
