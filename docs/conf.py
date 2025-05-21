@@ -18,6 +18,10 @@ extensions = [
     'sphinx.ext.autodoc',
     # Support for NumPy docstrings
     'sphinx.ext.napoleon',
+    'sphinx.ext.duration',
+    'sphinx.ext.doctest',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.intersphinx',
 ]
 
 templates_path = ['_templates']
