@@ -5,41 +5,27 @@
 Isolate TBabs component and write it to a file with header: energy (keV), tbabs (unitless; from 'model y'),
 tbabs (unitless; from 'model model').
 The last two columns are identical.
+
+Run this file from with make_table/, or update paths to GRPSPEC, DAT_TBABS, etc
 comment
 
 
 GRPSPEC="grp_spectrum.pi"
-TRASHDIR="/home/vhep/mspletts/Trash"
 
 # Units are 10^22 atoms/cm^2
 # Weighted mean evaluated using https://www.swift.ac.uk/analysis/nhtot/index.php
 NH=0.101
 
 
-DAT_TBABS="../tbabs_abund_wilm_component.dat"
-ENERGYBINS="ebin_edges.txt"
+DAT_TBABS="../absorption_tables/tbabs_abund_wilm_component.dat"
+ENERGYBINS="ebin_edges_100eV_to_100keV.txt"
 LOG="_xspec_tbabs.log"
-
-
-# Move already existing data files so they can be re-written within XSpec.
-# File will be overwritten if it already exist in 'TRASHDIR'
-# (There is no interactive prompt, my `mv -vip` alias is suppressed when using this script for some reason).
-for i in $DAT_TBABS
-do
-  if [ -e "$i" ]; then
-      # File exists. Move it so it can be rewritten.
-      mv "$i" "$TRASHDIR"
-  else
-      # Do nothing if the file does not exist.
-      :
-  fi
-done
 
 
 # Help with tcl commands and de-absorption idea (set index=0, norm=1, don't refit) supplied by Gordon, Craig A
 # via the XSpec help desk email
 xspec << EOF >  $LOG
-`#XSPEC12>` data $GRPSPEC `#Load spectral file formatted as...`
+`#XSPEC12>` data $GRPSPEC `#Load spectral file output from grppha`
 `#XSPEC12>` ignore bad `#Ignore bad channels`
 `#XSPEC12>` ignore **-0.3 `#Ignore energies below 0.3 keV`
 `#XSPEC12>` ignore 10.0-** `#Ignore energies above 10 keV`
