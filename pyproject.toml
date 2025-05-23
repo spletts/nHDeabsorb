@@ -5,10 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nHDeabsorb"
 description = "Calculate nH absorption in order to deabsorb an SED"
-version = "0.1.0"
+version = "0.2.0"
 readme = "README.md"
-dependencies = ["numpy<=1.25.2"]
-requires-python = ">=3.0"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+dependencies = ["numpy>=1.21.6,<1.27.0", 
+                "scipy>=1.11,<1.12"] # https://docs.scipy.org/doc/scipy-1.15.2/dev/toolchain.html
+requires-python = ">=3.9,<3.13"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -17,7 +20,7 @@ where = ["src"]
 include-package-data = true
 
 [tool.setuptools.package-data]
-mypkg = ["*.dat"]
+"nHDeabsorb" = ["absorption_tables/*.dat", "sample_data/*dat"]
 
 [project.urls]
 Repository = "https://github.com/spletts/nHDeabsorb"
