@@ -1,0 +1,7 @@
+call\_get\_absorption module
+============================
+
+.. automodule:: nHDeabsorb.get_absorption
+   :members:
+   :show-inheritance:
+   :undoc-members:

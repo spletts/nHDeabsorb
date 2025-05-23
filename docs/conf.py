@@ -5,7 +5,9 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-#import nHDeabsorb
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 project = 'nHDeabsorb'
 copyright = '2025, Megan Splettstoesser'
@@ -23,7 +25,16 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
+    'myst_parser',
 ]
+
+napoleon_numpy_docstring = True
+
+autodoc_default_options = {
+    'member-order': 'bysource', 
+    'show-inheritance': True,   
+    'special-members': '__init__', 
+    }
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
