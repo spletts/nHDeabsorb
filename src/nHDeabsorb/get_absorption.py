@@ -1,95 +1,83 @@
 """
-Get the photoionization absorption component given specific energy bins (in keV) and save to a table.
-
-The filename of the table created is written to log file get_absorption.logging
+Get the photoionization absorption component given specific energy bins (in keV).
 """
 
 import argparse
 import logging
 import pkg_resources
 import sys
-
+import os
 import numpy as np
 
-PARSER = argparse.ArgumentParser(
-    prog='get_absorption.py',
-    description='Evaluate the photoionization absorption component given specific energy bins (in keV)',
-    epilog='')
+
 ABSORPTION_DICT = {'phabs': 'phabs_component.dat', 'tbabs_abund_wilm': 'tbabs_abund_wilm_component.dat'}
-# Energy ranges (keV) which are affected by absorption
-MIN_ABSORPTION_ENERGY = 0.3
-MAX_ABSORPTION_ENERGY = 10.0
+# Header for output file
 HDR_OUT = 'energy_keV,ebin_width_keV,absorption'
 LOG_FN = 'get_absorption.logging'
-logging.basicConfig(filename=LOG_FN, filemode='w', level=logging.DEBUG)
 
 
 def interpolate_absorption(en, fn_abs):
-    """Get the value of absorption component at specific energy `en` (in keV) via interpolating a data table `fn` which
-    has the absorption component calculated by XSpec (see make_table/xspec_isolate_phabs.sh for an example).
+    """Get the value of absorption at specific energy ``en`` (in keV) via interpolating a data table ``fn_abs`` which
+    has the absorption component calculated by XSpec (see src/nHDeabsorb/make_table/).
 
     Parameters
     ----------
     en : array[float] or float
         Energy in keV
     fn_abs : str
-        File with implicit headers: energy (in keV), corresponding absorption component values
-        Valid options - phabs_component.dat, tbabs_abund_wilm_component.dat
+        Filename for absorption table with implicit header: energy (in keV), corresponding absorption.
+        Valid options:
 
+        - src/nHDeabsorb/absorption_tables/phabs_component.dat
+        - src/nHDeabsorb/absorption_tables/tbabs_abund_wilm_component.dat
+
+        These were created in make_table/.
     Returns
     -------
-    array_like[float] or float
-    The interpolated absorption component at energy `en`
+    absorb : array_like[float] or float
+        The (interpolated) absorption at energy ``en``
     """
 
     # Can check `xspec_isolate_tbabs.sh` for header
-    # dat = read_csv(fn, header=0, delimiter='\s+')
-    # energy = dat['energy_kev'].to_numpy()
-    # mdl_flux = dat.iloc[:, 1].to_numpy()
     dat = np.genfromtxt(fn_abs, skip_header=1)
     energy = dat[:, 0]
     mdl_flux = dat[:, 1]
-    # This header name depends on the value of nH used (nH is in the header for record keeping),
-    # so do not use the header name here
     exp_factor_xspec = mdl_flux  # because norm=1 and idx=0; using tcloutr on plot model (not eemodel)
 
-    y = np.interp(x=en, xp=energy, fp=exp_factor_xspec)
+    absorb = np.interp(x=en, xp=energy, fp=exp_factor_xspec)
 
-    return y
+    return absorb
 
 
 def xspec_absorption_component(ebin_min, ebin_max, absorption_model, nh=0.101):
     """Calculate the absorption value that XSpec uses in each energy bin, which is the average of the absorption
-    at the bin edges.
-
-    The absorption outside 0.3-10 keV is set to 1 (no absorption).
-
-    'Tbabs evaluates the cross-section at each end of the energy bin and averages them.'
-    -Kieth via xspec12@athena.gsfc.nasa.gov
-    NOTE: unknown analytic formula for the cross section which XSpec uses for TBabs + abund_wilm and phabs
+    at the bin edges. The absorption outside the energy range in the absorption table (``fn_abs``) is set to 1 (no absorption).
 
     Parameters
     ----------
     ebin_min : array_like[float] or float
-        Lower bin edges in keV
+        Lower bin edge(s) in keV
     ebin_max : array_like[float]  or float
-        Upper bin edges in keV
+        Upper bin edge(s) in keV
     absorption_model : str
-        Which absorption model to calculate.
-        Valid options - tbabs_abdund_wilm, phabs
-        which correspond to the XSpec commmands >tbabs >abund wilm and >phabs
+        Which absorption model to use in the calculation.
+        Valid options: 
+
+        - tbabs_abdund_wilm
+        - phabs
+
+        The options correspond to the XSpec commands ``tbabs, abund wilm`` and ``phabs``, respectively.
     nh : float
-        Hydrogen column density in **units of 10^22 atoms/cm^2**
-        The default 0.101 was used to create the tables phabs_component.dat and tbabs_abund_wilm_component.dat
+        Hydrogen column density in **units of 10^22 atoms/cm^2**.
+        The default of nh=0.101 was used to create the tables in absorption_tables/.
 
     Returns
     -------
-    array_like[float] or float
+    abs_bin_avg : array_like[float] or float
+        Absorption in the energy bin(s) [``ebin_min``, ``ebin_max``], as calculated by XSpec (averaged at bin edges)
     """
 
-    fn_abs = pkg_resources.resource_filename(__name__, ABSORPTION_DICT[absorption_model])
-
-    # idx_no_absorb = np.where((ebin_min < 0.3) | (ebin_max > 10))
+    fn_abs = pkg_resources.resource_filename('nHDeabsorb', os.path.join('absorption_tables', ABSORPTION_DICT[absorption_model]))
 
     # Get absorption at the bin edges, and take average of each bin
     abs_at_emin = interpolate_absorption(ebin_min, fn_abs)
@@ -97,9 +85,12 @@ def xspec_absorption_component(ebin_min, ebin_max, absorption_model, nh=0.101):
     abs_bin_avg = np.average((abs_at_emin, abs_at_emax), axis=0)
 
     # Check for energies outside the absorption range, and set absorption to 1 (no absorption)
+    tbl_dat = np.genfromtxt(fn_abs, skip_header=1)
+    tbl_energy = tbl_dat[:, 0]
     for i, _ in enumerate(abs_at_emin):
-        if ebin_min[i] < MIN_ABSORPTION_ENERGY or ebin_max[i] > MAX_ABSORPTION_ENERGY:
+        if ebin_min[i] < min(tbl_energy) or ebin_max[i] > tbl_energy:
             abs_bin_avg[i] = 1
+            logging.warning(f"Energy bin [{ebin_min[i]}, {ebin_max[i]}] keV lies outside the ranges in {fn_abs}, so the absorption is set equal to 1 (NO absorption).")
 
     # absorb2 = absorb1^(nH2/nH1); see README.md
     if nh != 0.101:
@@ -109,33 +100,45 @@ def xspec_absorption_component(ebin_min, ebin_max, absorption_model, nh=0.101):
 
 
 def make_absorption_table(fn_sed_data, absorption_model, nh, fn_out):
-    """Create a table of the absorption corresponding to the energy bins in `fn_sed_data`.
-    The absorption component is set by `absorption_model` and `nh`.
-    If `absorption_model` is not recognized the program will exit.
+    """Create a table of the absorption values corresponding to the energy bins in ``fn_sed_data``. 
+    Save table as ``fn_out``.
+    The absorption depends on ``absorption_model`` and ``nh``.
 
     Parameters
     ----------
     fn_sed_data : str
-        Filename for SED data which must have:
-        - No header
-            To change this behavior, edit `skip_header`
-        - Energy in keV in the first column
-            To change this requirement, edit `energy = data[:, 0]` with the relevant index
+        Filename for SED data with:
+
+        - No header. To change this behavior, edit ``skip_header``
+        - Energy in keV in the first column. To change this requirement, edit ``energy = data[:, 0]`` with the relevant index
         - Energy bin width in keV in the second column.
-        The remaining columns are not read.
+        - Any remaining columns are not read.
+
+        Note: User will need to rewrite the code to read their SED data unless it is formatted as above.
     absorption_model : str
         Which absorption model to calculate.
-        Valid options - tbabs_abdund_wilm, phabs
-        which correspond to the XSpec commmands >tbabs >abund wilm and >phabs
+        Valid options:
+
+        - tbabs_abdund_wilm
+        - phabs.
+        
+        The options correspond to the XSpec commands ``tbabs, abund wilm`` and ``phabs``, respectively.
     nh : float
         Hydrogen column density in **units of 10^22 atoms/cm^2**
     fn_out : str
-        Filename for output data table which has explicit headers `HDR_OUT` - energy_keV,ebin_width_keV,absorption
+        Filename for output data table which has explicit headers `HDR_OUT`: energy_keV,ebin_width_keV,absorption
+
+    Returns
+    -------
+    abs_bin_avg : array_like[float] or float
+        Absorption in the energy bin(s) [``ebin_min``, ``ebin_max``], as calculated by XSpec (averaged at bin edges)
     """
+
     data = np.genfromtxt(fn_sed_data, skip_header=0)
     energy = data[:, 0]
     ebin_width = data[:, 1]
     ebin_min, ebin_max = energy - ebin_width, energy + ebin_width
+
     if absorption_model not in ABSORPTION_DICT.keys():
         err_msg = f'{absorption_model} not a valid absorption model; must be one of: {ABSORPTION_DICT.keys()}'
         logging.info(err_msg)
@@ -148,3 +151,12 @@ def make_absorption_table(fn_sed_data, absorption_model, nh, fn_out):
 
     return abs_bin_avg 
 
+
+if __name__ == '__main__':
+    PARSER = argparse.ArgumentParser(
+    prog='get_absorption.py',
+    description='Evaluate the photoionization absorption component given specific energy bins (in keV)',
+    epilog='')
+    logging.basicConfig(filename=LOG_FN, filemode='w', level=logging.DEBUG)
+    make_absorption_table(fn_sed_data="sample_data/sed.dat", absorption_model="tbabs_abund_wilm", 
+                           nh=0.157, fn_out="absorption.csv")
