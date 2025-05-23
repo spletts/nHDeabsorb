@@ -1,10 +1,9 @@
 """
 Plot absorption tables in make_table/
-To run: [nHDeabsorb]$  python -m  absorption_plots.make_absorption_plots
+To run: [src/nHDeabsorb]$  python -m  absorption_plots.make_absorption_plots
 """
 
 import pandas as pd
-import get_absorption
 import matplotlib.pyplot as plt
 import numpy as np
 
