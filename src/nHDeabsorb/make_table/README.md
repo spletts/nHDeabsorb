@@ -40,6 +40,7 @@ The first column of this table has energies in keV. The second and third column 
 
 * xspec_isolate_tbabs.sh
     * Isolates XSpec's `tbabs` with `abund wilm` and writes it to table saved in [absorption_tables/](../absorption_tables/)
+    * `tbabs` command with `abund wilm` set is the photoelectric absorption component $\exp(-\eta\sigma)$ using the Tuebingen-Boulder ISM absorption model and ISM abundances from [`wilm`](https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract).
 
 * _xspec_phabs.log
     * XSpec output from running xspec_isolate_phabs.sh
