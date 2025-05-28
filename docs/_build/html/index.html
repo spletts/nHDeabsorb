@@ -16,9 +16,11 @@
       <script src="_static/documentation_options.js?v=01f34227"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Features and Overview" href="features.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,23 +42,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">nHDeabsorb</a><ul>
-<li><a class="reference internal" href="#modules">Modules</a><ul>
-<li><a class="reference internal" href="#module-nHDeabsorb.get_absorption">get_absorption.py</a><ul>
-<li><a class="reference internal" href="#nHDeabsorb.get_absorption.interpolate_absorption"><code class="docutils literal notranslate"><span class="pre">interpolate_absorption()</span></code></a></li>
-<li><a class="reference internal" href="#nHDeabsorb.get_absorption.xspec_absorption_component"><code class="docutils literal notranslate"><span class="pre">xspec_absorption_component()</span></code></a></li>
-<li><a class="reference internal" href="#nHDeabsorb.get_absorption.make_absorption_table"><code class="docutils literal notranslate"><span class="pre">make_absorption_table()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features and Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
 </ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#usage">Usage</a></li>
-</ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -83,254 +76,47 @@
              
   <section id="nhdeabsorb">
 <h1>nHDeabsorb<a class="headerlink" href="#nhdeabsorb" title="Link to this heading"></a></h1>
+<p>nHDeabsorb is designed for use with <a class="reference external" href="https://xspec.io">XSpec</a>-produced X-ray spectra in order to determine the intrinsic X-ray emission by nH-deabsorbing spectra.
+This is required for blazar SED modeling codes such as <a class="reference external" href="https://bjet-mcmc.readthedocs.io/en/latest/">Bjet_MCMC</a> which model the intrinsic (not observed) emission.</p>
 <div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features and Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="features.html#main-feature-quantify-absorption-of-x-rays">Main feature: quantify absorption of X-rays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#make-absorption-tables">Make absorption tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#deabsorb-spectra">Deabsorb spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#user-set-nh">User-set nH</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#clone-and-edit-pythonpath">Clone and edit PYTHONPATH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-nHDeabsorb.get_absorption">get_absorption.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#nHDeabsorb.get_absorption.interpolate_absorption"><code class="docutils literal notranslate"><span class="pre">interpolate_absorption()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#nHDeabsorb.get_absorption.xspec_absorption_component"><code class="docutils literal notranslate"><span class="pre">xspec_absorption_component()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#nHDeabsorb.get_absorption.make_absorption_table"><code class="docutils literal notranslate"><span class="pre">make_absorption_table()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
-<p>&lt;h1&gt;nHDeabsorb&lt;/h1&gt;</p>
-<p>&lt;h2&gt;Overview&lt;/h2&gt;</p>
-<p>&lt;p&gt;nHDeabsorb is designed for use with &lt;a href=”<a class="reference external" href="https://xspec.io">https://xspec.io</a>”&gt;XSpec&lt;/a&gt;-produced X-ray spectra in order to determine the intrinsic X-ray emission by nH-deabsorbing spectra. This is required for blazar SED modeling codes such as &lt;a href=”<a class="reference external" href="https://bjet-mcmc.readthedocs.io/en/latest/">https://bjet-mcmc.readthedocs.io/en/latest/</a>”&gt;Bjet_MCMC&lt;/a&gt; which model the intrinsic (not observed) emission.&lt;/p&gt;</p>
-<p>&lt;h2&gt;Installation&lt;/h2&gt;</p>
-<p>&lt;h3&gt;Clone and edit PYTHONPATH&lt;/h3&gt;</p>
-<p>&lt;p&gt;This is a very light package.
-If you prefer you can simply clone the repository and reorganize the necessary handful of functions and files into your own already-existing analysis pipelines,
-which likely already have the &lt;a href=”#requirements”&gt;required packages&lt;/a&gt;.
-You can add it to your PYTHONPATH &lt;code&gt;export PYTHONPATH=$PYTHONPATH:/path/to/nHDeabsorb/src/nHDeabsorb&lt;/code&gt;; now you should be able to &lt;code&gt;from nHDeabsorb import get_absorption&lt;/code&gt;.
-&lt;strong&gt;However&lt;/strong&gt;, you may need to edit the path to &lt;a href=”src/nHDeabsorb/absorption_tables/”&gt;absorption_tables/&lt;/a&gt; in the &lt;a href=”src/nHDeabsorb/get_absorption.py”&gt;source code&lt;/a&gt;, specifically lines with &lt;code&gt;pkg_resources.resource_filename&lt;/code&gt;.&lt;/p&gt;</p>
-<p>&lt;h3&gt;Installing from source&lt;/h3&gt;</p>
-<p>&lt;p&gt;&lt;code&gt;shell
-git clone <a class="reference external" href="https://github.com/username/nHDeabsorb.git">https://github.com/username/nHDeabsorb.git</a>
-cd nHDeabsorb
-python -m build
-pip install dist/nhdeabsorb-0.2.0-py3-none-any.whl
-&lt;/code&gt;
-(I believe the lowercase of nhdeabsorb in the filename is due the version of setuptools or build; it may be uppercase as nHDeabsorb for other versions of setuptools).
-or edit mode
-&lt;code&gt;shell
-git clone <a class="reference external" href="https://github.com/username/nHDeabsorb.git">https://github.com/username/nHDeabsorb.git</a>
-cd nHDeabsorb
-pip install -e .
-&lt;/code&gt;&lt;/p&gt;</p>
-<p>&lt;p&gt;Now you can &lt;code&gt;import nHDeabsorb&lt;/code&gt;.&lt;/p&gt;</p>
-<p>&lt;p&gt;python -m build&lt;/p&gt;</p>
-<p>&lt;h3&gt;Requirements&lt;/h3&gt;</p>
-<p>&lt;ul&gt;
-&lt;li&gt;setuptools&lt;/li&gt;
-&lt;li&gt;numpy, scipy, and Python &lt;a href=”<a class="reference external" href="https://docs.scipy.org/doc/scipy-1.15.2/dev/toolchain.html">https://docs.scipy.org/doc/scipy-1.15.2/dev/toolchain.html</a>”&gt;non-conflicting versions&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;e.g. numpy&gt;=1.21.6,&amp;lt;1.27.0, scipy&gt;=1.11,&amp;lt;1.12, python&gt;=3.9,&amp;lt;3.13&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Python&gt;=3 due to string formatting &lt;code&gt;f{}&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</p>
-<p>&lt;h2&gt;Context&lt;/h2&gt;</p>
-<p>&lt;ul&gt;
-&lt;li&gt;Main feature: Given user-set energy bins (in keV), returns the photoelectric/photoionization absorption $exp(-etasigma(E))$, as calculated by XSpec (&lt;code&gt;tbabs&lt;/code&gt; + &lt;code&gt;abund wilm&lt;/code&gt;, &lt;code&gt;phabs&lt;/code&gt;). This depends on the details of the user’s XSpec analysis:
-&lt;ul&gt;
-&lt;li&gt;Which absorption model was used (&lt;code&gt;tbabs&lt;/code&gt; + &lt;code&gt;abund wilm&lt;/code&gt;, &lt;code&gt;phabs&lt;/code&gt; are supported, but user should be able to implement other models using &lt;a href=”src/nHDeabsorb/make_table/”&gt;make_table/&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Which nH value was used&lt;/li&gt;
-&lt;li&gt;User-set energy bins should be from the SED output by XSpec&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Tables in this repository (&lt;a href=”src/nHDeabsorb/absorption_tables/”&gt;absorption_tables/&lt;/a&gt;) were created using XSpec. The tables contain the absorption $exp(-etasigma)$ (where $sigma equiv sigma(E)$, $eta$ is &lt;code&gt;nH&lt;/code&gt;, and $sigma(E)$ is the cross section) and corresponding energy (in keV).  This is done to indirectly access whichever formula for the cross section that XSpec uses for each model. The table is interpolated in order to evaluate the nH absorption at specific energies, outside of XSpec.
-&lt;ul&gt;
-&lt;li&gt;The absorption component was isolated for XSpec’s &lt;code&gt;tbabs&lt;/code&gt; + &lt;code&gt;abund wilm&lt;/code&gt; and &lt;code&gt;phabs&lt;/code&gt; commands/models.&lt;/li&gt;
-&lt;li&gt;&lt;a href=”src/nHDeabsorb/absorption_plots/absorption_vs_xrt_energy_range.png”&gt;Plot of absorption tables used in the repository&lt;/a&gt;  &lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;To determine the intrinsic/deabsorbed flux from the observed flux, divide the observed flux by the absorption: $F&lt;em&gt;{int} = F&lt;/em&gt;{obs}/exp(-etasigma)$. This package calculates $exp(-etasigma)$.
-&lt;ul&gt;
-&lt;li&gt;Intrinsic emission is required input for blazar modeling codes such as Bjet_MCMC.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;To evaluate intrinsic absorption of a source at redshift $z$ (e.g. XSpec’s &lt;code&gt;zphabs&lt;/code&gt;), evaluate $sigma(E)$ at $E(1+z)$. For details see the XSpec User Guide’s documentation for &lt;code&gt;zphabs&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The absorption is energy and nH (Hydrogen column density) dependent. The user can set &lt;code&gt;nh&lt;/code&gt; (this is done in units of $10^{22}$ cm&lt;sup&gt;-2&lt;/sup&gt;). The tables (e.g. &lt;a href=”src/nHDeabsorb/absorption_tables/tbabs_abund_wilm_component.dat”&gt;tbabs&lt;em&gt;abund&lt;/em&gt;wilm&lt;em&gt;component.dat&lt;/a&gt;) have absorption $p&lt;/em&gt;1$ (column name “tbabs&lt;em&gt;nh0.101&lt;/em&gt;model&lt;em&gt;mode”) for $eta&lt;/em&gt;1 = 0.101$ (units of $times 10^{22}$ atoms cm&lt;sup&gt;-2&lt;/sup&gt;). This repository calculates absorption $p&lt;em&gt;2$ for $eta&lt;/em&gt;2$ (&lt;code&gt;nh&lt;/code&gt;) via:&lt;/p&gt;</p>
-<p>&lt;p&gt;$p&lt;em&gt;1 = exp( -eta&lt;/em&gt;1 sigma(E) ) Rightarrow sigma(E) = - frac{ln(p&lt;em&gt;1)}{eta&lt;/em&gt;1}$&lt;/p&gt;</p>
-<p>&lt;p&gt;$p&lt;em&gt;2 = exp( -eta&lt;/em&gt;2 sigma(E) ) = p&lt;em&gt;1^{eta&lt;/em&gt;2/eta_1}$&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;</p>
-<p>&lt;h2&gt;Usage&lt;/h2&gt;</p>
-<p>&lt;p&gt;The user has observed fluxes $F&lt;em&gt;{obs}$ fit with XSpec using the XSpec command &lt;code&gt;phabs&lt;/code&gt; or &lt;code&gt;tbabs&lt;/code&gt; + &lt;code&gt;abund wilm&lt;/code&gt;.
-To get the intrinsic flux $F&lt;/em&gt;{int} = F_{obs}/exp(-etasigma)$, the absorption $exp(-etasigma)$ must be isolated.
-There are two ways to retrieve the absorption, use whichever works better with your workflow:
-* Retrieve the absorption values directly as an array with &lt;code&gt;get_absorption.xspec_absorption_component&lt;/code&gt;
-* Get the absorption values as a table with &lt;code&gt;get_absorption.make_absorption_table&lt;/code&gt;&lt;/p&gt;</p>
-<p>&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: XSpec computes the absorption in each energy bin by taking the average absorption of the bin edges. Thus, this script does the same.
-If you want to calculate the absorption at a specific energy (not across a bin), use &lt;code&gt;get_absorption.interpolate_absorption&lt;/code&gt;.&lt;/p&gt;</p>
-<p>&lt;h3&gt;Example&lt;/h3&gt;</p>
-<p>&lt;p&gt;If the package is installed (as in &lt;a href=”#installing-from-source”&gt;installing from source&lt;/a&gt;):
-<a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
-from nHDeabsorb import get_absorption&lt;/p&gt;</p>
-<p>&lt;h1&gt;One option: get the absorption values as array, using array of energies&lt;/h1&gt;</p>
-<dl class="simple">
-<dt>&lt;p&gt;absorb = get&lt;em&gt;absorption.xspec&lt;/em&gt;absorption&lt;em&gt;component(ebin&lt;/em&gt;min=[0.4, 0.5],</dt><dd><p>ebin&lt;em&gt;max=[0.5, 0.6],
-absorption&lt;/em&gt;model=’tbabs&lt;em&gt;abund&lt;/em&gt;wilm’,
-nh=0.15)</p>
-</dd>
-</dl>
-<p><a href="#id5"><span class="problematic" id="id6">``</span></a>&lt;code&gt;
-where (also see function docstring):
-<em>&lt;/code&gt;ebin&lt;em&gt;min&lt;code&gt;,&lt;/code&gt;ebin&lt;/em&gt;max&lt;code&gt;: lower, upper bin edges in *keV</em>.
-<a href="#id7"><span class="problematic" id="id8">*</span></a>&lt;/code&gt;absorption&lt;em&gt;model&lt;code&gt;: which absorption model from XSpec to apply. Valid options are&lt;/code&gt;’phabs’, ‘tbabs&lt;/em&gt;abdund_wilm’&lt;code&gt;</p>
-<blockquote>
-<div><p><a href="#id9"><span class="problematic" id="id10">*</span></a>&lt;/code&gt;phabs&lt;code&gt;: XSpec’s&lt;/code&gt;phabs&lt;code&gt;command
-<a href="#id11"><span class="problematic" id="id12">*</span></a>&lt;/code&gt;tbabs&lt;code&gt;with&lt;/code&gt;abund wilm&lt;code&gt;: XSpec’s&lt;/code&gt;tbabs&lt;code&gt;command with&lt;/code&gt;abund wilm&lt;code&gt;set. This is the photoelectric absorption component $exp(-etasigma)$ using the Tuebingen-Boulder ISM absorption model and ISM abundances from [&lt;/code&gt;wilm&lt;code&gt;](<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract">https://ui.adsabs.harvard.edu/abs/2000ApJ…542..914W/abstract</a>).</p>
-</div></blockquote>
-<p><a href="#id13"><span class="problematic" id="id14">*</span></a>&lt;/code&gt;nh`: Hydrogen column density &lt;strong&gt;in units of 10&lt;sup&gt;22&lt;/sup&gt; cm&lt;sup&gt;-2&lt;/sup&gt;&lt;/strong&gt; used for your XSpec analysis &lt;/p&gt;</p>
-<p>&lt;p&gt;```python
-from nHDeabsorb import get_absorption&lt;/p&gt;</p>
-<p>&lt;h1&gt;Another option: get the absorption values as table, using table which contains energies&lt;/h1&gt;</p>
-<p>&lt;p&gt;fn&lt;em&gt;spec = pkg&lt;/em&gt;resources.resource&lt;em&gt;filename(‘nHDeabsorb’, ‘sample&lt;/em&gt;data/sed.dat’)
-absorb&lt;em&gt;for&lt;/em&gt;spec = get&lt;em&gt;absorption.make&lt;/em&gt;absorption&lt;em&gt;table(fn&lt;/em&gt;sed&lt;em&gt;data=fn&lt;/em&gt;spec,</p>
-<blockquote>
-<div><p>absorption&lt;em&gt;model=’tbabs&lt;/em&gt;abund&lt;em&gt;wilm’,
-nh=0.15,
-fn&lt;/em&gt;out=’../absorption&lt;em&gt;values.csv’)</p>
-</div></blockquote>
-<p><a href="#id15"><span class="problematic" id="id16">``</span></a>&lt;code&gt;
-where (also see function docstring):
-<a href="#id17"><span class="problematic" id="id18">*</span></a>&lt;/code&gt;fn&lt;/em&gt;sed&lt;em&gt;data&lt;code&gt;: filename for SED data which must have:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>No header (to change this behavior, edit&lt;/code&gt;skip&lt;/em&gt;header&lt;code&gt;in&lt;/code&gt;make&lt;em&gt;absorption&lt;/em&gt;table&lt;code&gt;)</p></li>
-<li><p>Energy in keV in the first column (to change this requirement, edit&lt;/code&gt;energy = data[:, 0]&lt;code&gt;with the relevant index)</p></li>
-<li><p>Energy bin width in keV in the second column (to change this requirement, edit&lt;/code&gt;ebin&lt;em&gt;width = data[:, 1])</p></li>
-<li><p>Note that the remaining columns are not read.</p></li>
-</ul>
-</div></blockquote>
-<ul class="simple">
-<li><dl class="simple">
-<dt>&lt;code&gt;absorption_model&lt;/code&gt;: which absorption model from XSpec to apply. Valid options are &lt;code&gt;’phabs’, ‘tbabs_abdund_wilm’&lt;/code&gt;</dt><dd><ul>
-<li><p>&lt;code&gt;phabs&lt;/code&gt;: XSpec’s &lt;code&gt;phabs&lt;/code&gt; command</p></li>
-<li><p>&lt;code&gt;tbabs&lt;/code&gt; with &lt;code&gt;abund wilm&lt;/code&gt;: XSpec’s &lt;code&gt;tbabs&lt;/code&gt; command with &lt;code&gt;abund wilm&lt;/code&gt; set. This is the photoelectric absorption component $exp(-etasigma)$ using the Tuebingen-Boulder ISM absorption model and ISM abundances from &lt;a href=”<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract">https://ui.adsabs.harvard.edu/abs/2000ApJ…542..914W/abstract</a>”&gt;&lt;code&gt;wilm&lt;/code&gt;&lt;/a&gt;.</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>&lt;code&gt;nh&lt;/code&gt;: Hydrogen column density &lt;strong&gt;in units of 10&lt;sup&gt;22&lt;/sup&gt; cm&lt;sup&gt;-2&lt;/sup&gt;&lt;/strong&gt; used for your XSpec analysis</p></li>
-<li><dl class="simple">
-<dt>&lt;code&gt;fn_out&lt;/code&gt;:  filename of output data file which contains the energy bin centers (in keV) in the first</dt><dd><p>column, and the energy bin width (in keV) in the second column, and the corresponding
-absorption component in the third and final column.
-This comma-separated file has explicit header: energy&lt;/em&gt;keV,ebin&lt;em&gt;width&lt;/em&gt;keV,absorption.&lt;/p&gt;</p>
-</dd>
-</dl>
-</li>
-</ul>
-<p>&lt;p&gt;If not installed with pip, update the imports necessary to call &lt;code&gt;xspec_absorption_component&lt;/code&gt; and/or &lt;code&gt;make_absorption_table&lt;/code&gt;. Everything else follows as above.&lt;/p&gt;</p>
-<p>&lt;h2&gt;License&lt;/h2&gt;</p>
-<p>&lt;p&gt;3-Clause BSD License; see &lt;a href=”LICENSE”&gt;LICENSE&lt;/a&gt;.&lt;/p&gt;</p>
-<p>&lt;h2&gt;References and Acknowledgements&lt;/h2&gt;</p>
-<p>&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=”<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1996ASPC..101...17A/abstract">https://ui.adsabs.harvard.edu/abs/1996ASPC..101…17A/abstract</a>”&gt;Arnaud, K. A., “XSPEC: The First Ten Years”&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Craig A. Gordon from the XSpec help desk provided instructions to isolate the absorption component. He also wrote a sample tcl script (via email exchange) to write values to data tables within XSpec.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;</p>
-<section id="modules">
-<h2>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h2>
-<section id="module-nHDeabsorb.get_absorption">
-<span id="get-absorption-py"></span><h3>get_absorption.py<a class="headerlink" href="#module-nHDeabsorb.get_absorption" title="Link to this heading"></a></h3>
-<p>Get the photoionization absorption component given specific energy bins (in keV).</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="nHDeabsorb.get_absorption.interpolate_absorption">
-<span class="sig-prename descclassname"><span class="pre">nHDeabsorb.get_absorption.</span></span><span class="sig-name descname"><span class="pre">interpolate_absorption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">en</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_abs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nHDeabsorb.get_absorption.interpolate_absorption" title="Link to this definition"></a></dt>
-<dd><p>Get the value of absorption at specific energy <code class="docutils literal notranslate"><span class="pre">en</span></code> (in keV) via interpolating a data table <code class="docutils literal notranslate"><span class="pre">fn_abs</span></code> which
-has the absorption component calculated by XSpec (see src/nHDeabsorb/make_table/).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>en</strong> (<em>array</em><em>[</em><em>float</em><em>] or </em><em>float</em>) – Energy in keV</p></li>
-<li><p><strong>fn_abs</strong> (<em>str</em>) – <p>Filename for absorption table with implicit header: energy (in keV), corresponding absorption.
-Valid options:</p>
-<ul>
-<li><p>src/nHDeabsorb/absorption_tables/phabs_component.dat</p></li>
-<li><p>src/nHDeabsorb/absorption_tables/tbabs_abund_wilm_component.dat</p></li>
-</ul>
-<p>These were created in make_table/.</p>
-</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>absorb</strong> – The (interpolated) absorption at energy <code class="docutils literal notranslate"><span class="pre">en</span></code></p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>array_like[float] or float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="nHDeabsorb.get_absorption.xspec_absorption_component">
-<span class="sig-prename descclassname"><span class="pre">nHDeabsorb.get_absorption.</span></span><span class="sig-name descname"><span class="pre">xspec_absorption_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebin_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebin_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absorption_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.101</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nHDeabsorb.get_absorption.xspec_absorption_component" title="Link to this definition"></a></dt>
-<dd><p>Calculate the absorption value that XSpec uses in each energy bin, which is the average of the absorption
-at the bin edges. The absorption outside the energy range in the absorption table (<code class="docutils literal notranslate"><span class="pre">fn_abs</span></code>) is set to 1 (no absorption).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ebin_min</strong> (<em>array_like</em><em>[</em><em>float</em><em>] or </em><em>float</em>) – Lower bin edge(s) in keV</p></li>
-<li><p><strong>ebin_max</strong> (<em>array_like</em><em>[</em><em>float</em><em>]  or </em><em>float</em>) – Upper bin edge(s) in keV</p></li>
-<li><p><strong>absorption_model</strong> (<em>str</em>) – <p>Which absorption model to use in the calculation.
-Valid options:</p>
-<ul>
-<li><p>tbabs_abdund_wilm</p></li>
-<li><p>phabs</p></li>
-</ul>
-<p>The options correspond to the XSpec commands <code class="docutils literal notranslate"><span class="pre">tbabs,</span> <span class="pre">abund</span> <span class="pre">wilm</span></code> and <code class="docutils literal notranslate"><span class="pre">phabs</span></code>, respectively.</p>
-</p></li>
-<li><p><strong>nh</strong> (<em>float</em>) – Hydrogen column density in <strong>units of 10^22 atoms/cm^2</strong>.
-The default of nh=0.101 was used to create the tables in absorption_tables/.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>abs_bin_avg</strong> – Absorption in the energy bin(s) [<code class="docutils literal notranslate"><span class="pre">ebin_min</span></code>, <code class="docutils literal notranslate"><span class="pre">ebin_max</span></code>], as calculated by XSpec (averaged at bin edges)</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>array_like[float] or float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="nHDeabsorb.get_absorption.make_absorption_table">
-<span class="sig-prename descclassname"><span class="pre">nHDeabsorb.get_absorption.</span></span><span class="sig-name descname"><span class="pre">make_absorption_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn_sed_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absorption_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nHDeabsorb.get_absorption.make_absorption_table" title="Link to this definition"></a></dt>
-<dd><p>Create a table of the absorption values corresponding to the energy bins in <code class="docutils literal notranslate"><span class="pre">fn_sed_data</span></code>.
-Save table as <code class="docutils literal notranslate"><span class="pre">fn_out</span></code>.
-The absorption depends on <code class="docutils literal notranslate"><span class="pre">absorption_model</span></code> and <code class="docutils literal notranslate"><span class="pre">nh</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fn_sed_data</strong> (<em>str</em>) – <p>Filename for SED data with:</p>
-<ul>
-<li><p>No header. To change this behavior, edit <code class="docutils literal notranslate"><span class="pre">skip_header</span></code></p></li>
-<li><p>Energy in keV in the first column. To change this requirement, edit <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">=</span> <span class="pre">data[:,</span> <span class="pre">0]</span></code> with the relevant index</p></li>
-<li><p>Energy bin width in keV in the second column.</p></li>
-<li><p>Any remaining columns are not read.</p></li>
-</ul>
-<p>Note: User will need to rewrite the code to read their SED data unless it is formatted as above.</p>
-</p></li>
-<li><p><strong>absorption_model</strong> (<em>str</em>) – <p>Which absorption model to calculate.
-Valid options:</p>
-<ul>
-<li><p>tbabs_abdund_wilm</p></li>
-<li><p>phabs.</p></li>
-</ul>
-<p>The options correspond to the XSpec commands <code class="docutils literal notranslate"><span class="pre">tbabs,</span> <span class="pre">abund</span> <span class="pre">wilm</span></code> and <code class="docutils literal notranslate"><span class="pre">phabs</span></code>, respectively.</p>
-</p></li>
-<li><p><strong>nh</strong> (<em>float</em>) – Hydrogen column density in <strong>units of 10^22 atoms/cm^2</strong></p></li>
-<li><p><strong>fn_out</strong> (<em>str</em>) – Filename for output data table which has explicit headers <cite>HDR_OUT</cite>: energy_keV,ebin_width_keV,absorption</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>abs_bin_avg</strong> – Absorption in the energy bin(s) [<code class="docutils literal notranslate"><span class="pre">ebin_min</span></code>, <code class="docutils literal notranslate"><span class="pre">ebin_max</span></code>], as calculated by XSpec (averaged at bin edges)</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>array_like[float] or float</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-</section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
-</section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="features.html" class="btn btn-neutral float-right" title="Features and Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

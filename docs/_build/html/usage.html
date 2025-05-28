@@ -16,9 +16,12 @@
       <script src="_static/documentation_options.js?v=01f34227"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,11 +43,17 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Usage</a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features and Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
-</div>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -71,12 +80,83 @@
              
   <section id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
+<p>The user has observed fluxes <span class="math notranslate nohighlight">\(F_{obs}\)</span> fit with XSpec using the XSpec command <code class="docutils literal notranslate"><span class="pre">phabs</span></code> or <code class="docutils literal notranslate"><span class="pre">tbabs</span></code> + <code class="docutils literal notranslate"><span class="pre">abund</span> <span class="pre">wilm</span></code>.
+To get the intrinsic flux <span class="math notranslate nohighlight">\(F_{int} = F_{obs}/\exp(-\eta\sigma)\)</span>, the absorption <span class="math notranslate nohighlight">\(\exp(-\eta\sigma)\)</span> must be isolated.
+There are two ways to retrieve the absorption, use whichever works better with your workflow:</p>
+<ul class="simple">
+<li><p>Retrieve the absorption values directly as an array with <code class="docutils literal notranslate"><span class="pre">get_absorption.xspec_absorption_component</span></code></p></li>
+<li><p>Get the absorption values as a table with <code class="docutils literal notranslate"><span class="pre">get_absorption.make_absorption_table</span></code></p></li>
+</ul>
+<p><strong>Note</strong>: XSpec computes the absorption in each energy bin by taking the average absorption of the bin edges. Thus, this script does the same.
+If you want to calculate the absorption at a specific energy (not across a bin), use <code class="docutils literal notranslate"><span class="pre">get_absorption.interpolate_absorption</span></code>.</p>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<p>If the package is installed (as in <a class="reference internal" href="installation.html#installing-from-source"><span class="std std-ref">Installing from source</span></a>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nHDeabsorb</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_absorption</span>
+
+<span class="c1"># One option: get the absorption values as array, using array of energies</span>
+<span class="n">absorb</span> <span class="o">=</span> <span class="n">get_absorption</span><span class="o">.</span><span class="n">xspec_absorption_component</span><span class="p">(</span><span class="n">ebin_min</span><span class="o">=</span><span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+                                                <span class="n">ebin_max</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span>
+                                                <span class="n">absorption_model</span><span class="o">=</span><span class="s1">&#39;tbabs_abund_wilm&#39;</span><span class="p">,</span>
+                                                <span class="n">nh</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where (also see function docstring):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ebin_min</span></code>, <code class="docutils literal notranslate"><span class="pre">ebin_max</span></code> : lower, upper bin edges in <em>keV</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">absorption_model</span></code>: which absorption model from XSpec to apply. Valid options are ‘phabs’, ‘tbabs_abdund_wilm’</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘phabs’: XSpec’s <code class="docutils literal notranslate"><span class="pre">phabs</span></code> command</p></li>
+<li><p>‘tbabs_abdund_wilm’: XSpec’s <code class="docutils literal notranslate"><span class="pre">tbabs</span></code> command with <code class="docutils literal notranslate"><span class="pre">abund</span> <span class="pre">wilm</span></code> set. This is the photoelectric absorption component <span class="math notranslate nohighlight">\(\exp(-\eta\sigma)\)</span> using the Tuebingen-Boulder ISM absorption model and ISM abundances from <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract">wilm</a>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nh</span></code>: Hydrogen column density in units of 10 <sup>22</sup> cm <sup>-2</sup> used for your XSpec analysis</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nHDeabsorb</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_absorption</span>
+
+<span class="c1"># Another option: get the absorption values as table, using table which contains energies</span>
+<span class="n">fn_spec</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;nHDeabsorb&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_data/sed.dat&#39;</span><span class="p">)</span>
+<span class="n">absorb_for_spec</span> <span class="o">=</span> <span class="n">get_absorption</span><span class="o">.</span><span class="n">make_absorption_table</span><span class="p">(</span><span class="n">fn_sed_data</span><span class="o">=</span><span class="n">fn_spec</span><span class="p">,</span>
+                                                    <span class="n">absorption_model</span><span class="o">=</span><span class="s1">&#39;tbabs_abund_wilm&#39;</span><span class="p">,</span>
+                                                    <span class="n">nh</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+                                                    <span class="n">fn_out</span><span class="o">=</span><span class="s1">&#39;../absorption_values.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where (also see function docstring):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">fn_sed_data</span></code>: filename for SED data which must have:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>No header (to change this behavior, edit <code class="docutils literal notranslate"><span class="pre">skip_header</span></code> in get_absorption.make_absorption_table)</p></li>
+<li><p>Energy in keV in the first column (to change this requirement, edit <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">=</span> <span class="pre">data[:,</span> <span class="pre">0]</span></code> with the relevant index)</p></li>
+<li><p>Energy bin width in keV in the second column (to change this requirement, edit <code class="docutils literal notranslate"><span class="pre">ebin_width</span> <span class="pre">=</span> <span class="pre">data[:,</span> <span class="pre">1]</span></code>)</p></li>
+<li><p>Note that the remaining columns are not read.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">absorption_model</span></code>: which absorption model from XSpec to apply. Valid options are ‘phabs’, ‘tbabs_abdund_wilm’</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘phabs’: XSpec’s <code class="docutils literal notranslate"><span class="pre">phabs</span></code> command</p></li>
+<li><p>‘tbabs_abdund_wilm’: XSpec’s <code class="docutils literal notranslate"><span class="pre">tbabs</span></code> command with <code class="docutils literal notranslate"><span class="pre">abund</span> <span class="pre">wilm</span></code> set. This is the photoelectric absorption component <span class="math notranslate nohighlight">\(\exp(-\eta\sigma)\)</span> using the Tuebingen-Boulder ISM absorption model and ISM abundances from <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract">wilm</a>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nh</span></code>: Hydrogen column density in units of 10 <sup>22</sup> cm <sup>-2</sup> used for your XSpec analysis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fn_out</span></code>:  filename of output data file which contains the energy bin centers (in keV) in the first column, and the energy bin width (in keV) in the second column, and the corresponding absorption component in the third and final column. This comma-separated file has explicit header: energy_keV,ebin_width_keV,absorption.</p></li>
+</ul>
+</section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

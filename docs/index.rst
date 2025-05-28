@@ -6,26 +6,14 @@
 nHDeabsorb
 ==========
 
+nHDeabsorb is designed for use with `XSpec <https://xspec.io>`_-produced X-ray spectra in order to determine the intrinsic X-ray emission by nH-deabsorbing spectra.
+This is required for blazar SED modeling codes such as `Bjet_MCMC <https://bjet-mcmc.readthedocs.io/en/latest/>`_ which model the intrinsic (not observed) emission.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
-
-.. include:: ../README.rst
-
-
-Modules
--------
-
-get_absorption.py
-~~~~~~~~~~~~~~~~~
-
-.. automodule:: nHDeabsorb.get_absorption
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Usage
------
+   features
+   installation
+   usage
+   modules

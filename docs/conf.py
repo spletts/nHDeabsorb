@@ -34,6 +34,8 @@ autodoc_default_options = {
     'member-order': 'bysource', 
     'show-inheritance': True,   
     'special-members': '__init__', 
+    'collapse_navigation': False,
+    'titles_only': False 
     }
 
 templates_path = ['_templates']
