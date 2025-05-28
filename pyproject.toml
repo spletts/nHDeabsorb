@@ -17,6 +17,10 @@ where = ["src"]
 
 [tool.setuptools]
 include-package-data = true
+install_requires = [
+    "myst-parser",
+    # other dependencies...
+]
 
 [tool.setuptools.package-data]
 "nHDeabsorb" = ["absorption_tables/*.dat", "sample_data/*dat"]
