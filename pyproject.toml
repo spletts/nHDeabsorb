@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "myst-parser"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -17,10 +17,6 @@ where = ["src"]
 
 [tool.setuptools]
 include-package-data = true
-install_requires = [
-    "myst-parser",
-    # other dependencies...
-]
 
 [tool.setuptools.package-data]
 "nHDeabsorb" = ["absorption_tables/*.dat", "sample_data/*dat"]
