@@ -2,7 +2,7 @@
 nHDeabsorb
 ==========
 
-Full documentation at `https://spletts-nhdeabsorb.readthedocs.io/en/latest/`_.
+Full documentation at `spletts-nhdeabsorb.readthedocs <https://spletts-nhdeabsorb.readthedocs.io/en/latest/>`_.
 
 Overview
 --------
