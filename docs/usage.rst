@@ -18,7 +18,7 @@ If the package is installed (as in :ref:`Installing from source`), to get an arr
 .. literalinclude:: ../example_scripts/pkg_run_arr.py
    :language: python
 
-where (also see function docstring ):
+where (also see function docstring/:doc:`modules`):
 
 * ``ebin_min``, ``ebin_max`` : lower, upper bin edges in *keV*.
 * ``absorption_model``: which absorption model from XSpec to apply. Valid options are 'phabs', 'tbabs_abdund_wilm'
@@ -33,7 +33,7 @@ To save the values to a table (below is a file in example_scripts/)::
 .. literalinclude:: ../example_scripts/pkg_run_tbl.py
    :language: python
 
-where (also see function docstring):
+where (also see function docstring/:doc:`modules`):
 
 * ``fn_sed_data``: filename for SED data which must have:
 
