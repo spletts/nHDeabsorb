@@ -13,7 +13,7 @@ Example
 
 Package use
 ~~~~~~~~~~~
-If the package is installed (as in :ref:`Installing from source`), to get a tn array of absorption values:
+If the package is installed (as in :ref:`Installing from source`), to get an array of absorption values (below is a file in example_scripts/):
 
 .. literalinclude:: ../example_scripts/pkg_run_arr.py
    :language: python
@@ -28,11 +28,11 @@ where (also see function docstring ):
 * ``calc_avg_using_endpoints=False`` :  Calculates the absorption in each bin by averaging all the absorption values that lie within each bin.
 * ``nh``: Hydrogen column density in units of 10 :sup:`22` cm :sup:`-2` used for your XSpec analysis
 
-To save the values to a table:
+To save the values to a table (below is a file in example_scripts/)::
 
 .. literalinclude:: ../example_scripts/pkg_run_tbl.py
    :language: python
-   
+
 where (also see function docstring):
 
 * ``fn_sed_data``: filename for SED data which must have:
