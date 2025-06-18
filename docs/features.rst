@@ -7,7 +7,7 @@ Main feature: quantify absorption of X-rays
 Given user-set energy bins (in keV), returns the photoelectric/photoionization absorption :math:`\exp(-\eta\sigma(E))`, 
 as calculated by XSpec (``tbabs`` + ``abund wilm``, ``phabs``). This depends on the details of the user's XSpec analysis:
 
-* Which absorption model was used (``tbabs`` + ``abund wilm``, ``phabs`` are supported (see `Make tables` if you use a different absorption model)
+* Which absorption model was used (``tbabs`` + ``abund wilm``, ``phabs`` are supported; see `Make tables` if you use a different absorption model)
 * Which nH value was used
 * User-set energy bins should be from the SED output by XSpec
 
@@ -19,11 +19,14 @@ Make absorption tables
 Tables in this repository (`absorption_tables/ <https://github.com/spletts/nHDeabsorb/src/nHDeabsorb/absorption_tables>`_) were created using XSpec.
 The tables contain the absorption :math:`\exp(-\eta\sigma(E))` 
 (where :math:`\eta` is `nH` the Hydrogen column density, and :math:`\sigma(E)` is the cross section) and corresponding energy (in keV). 
-This is done to indirectly access whichever formula for the cross section that XSpec uses for each model. 
-The table is interpolated in order to evaluate the nH absorption at specific energies, outside of XSpec.
+This is done to indirectly access whichever formula for the cross section that XSpec uses for each model.
+The absorption can be evaluated in two ways (see ``get_absorption.xspec_absorption_component`` and validation/ for differences between the results of the two methods):
+
+    * (Default) Calculates the absorption in each bin by averaging all the absorption values in the table that lie within each bin.
+    * Calculates the absorption in each bin by averaging the absorption at the endpoints of each bin. The absorption at the specific endpoint energy is evaluated by interpolating the table of absorption values.
     
-    * The absorption component was isolated for XSpec's ``tbabs`` + ``abund wilm`` and ``phabs`` commands/models.
-    * Plot of absorption tables used in the repository:
+The absorption component was isolated for XSpec's ``tbabs`` + ``abund wilm`` and ``phabs`` commands/models.
+Below is a plot of absorption tables used in the repository:
 
     .. image:: ../src/nHDeabsorb/absorption_plots/absorption_vs_xrt_energy_range.png
        :alt: Absorption vs energy plot of tables used in the repository
@@ -41,7 +44,6 @@ For details see the XSpec User Guide's documentation for ``zphabs``.
 
 User-set nH
 -----------
-
 The absorption is energy and nH (Hydrogen column density) dependent. 
 The user can set ``nh`` (this is done in units of 10 :sup:`22` cm :sup:`-2`). 
 The tables (e.g. tbabs_abund_wilm_component.dat) have absorption :math:`p_1` (column name "tbabs_nh0.101_model_mode") for :math:`\eta_1 = 0.101` (units of 10 :sup:`22` cm :sup:`-2`). 

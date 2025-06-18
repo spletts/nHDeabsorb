@@ -48,7 +48,10 @@
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features and Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#package-use">Package use</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
@@ -88,21 +91,26 @@ There are two ways to retrieve the absorption, use whichever works better with y
 <li><p>Retrieve the absorption values directly as an array with <code class="docutils literal notranslate"><span class="pre">get_absorption.xspec_absorption_component</span></code></p></li>
 <li><p>Get the absorption values as a table with <code class="docutils literal notranslate"><span class="pre">get_absorption.make_absorption_table</span></code></p></li>
 </ul>
-<p><strong>Note</strong>: XSpec computes the absorption in each energy bin by taking the average absorption of the bin edges. Thus, this script does the same.
-If you want to calculate the absorption at a specific energy (not across a bin), use <code class="docutils literal notranslate"><span class="pre">get_absorption.interpolate_absorption</span></code>.</p>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
-<p>If the package is installed (as in <a class="reference internal" href="installation.html#installing-from-source"><span class="std std-ref">Installing from source</span></a>):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nHDeabsorb</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_absorption</span>
+<section id="package-use">
+<h3>Package use<a class="headerlink" href="#package-use" title="Link to this heading"></a></h3>
+<p>If the package is installed (as in <a class="reference internal" href="installation.html#installing-from-source"><span class="std std-ref">Installing from source</span></a>), to get a tn array of absorption values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Get array of absorption values from nHDeabsorb&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nHDeabsorb</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_absorption</span>
+
 
 <span class="c1"># One option: get the absorption values as array, using array of energies</span>
 <span class="n">absorb</span> <span class="o">=</span> <span class="n">get_absorption</span><span class="o">.</span><span class="n">xspec_absorption_component</span><span class="p">(</span><span class="n">ebin_min</span><span class="o">=</span><span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
                                                 <span class="n">ebin_max</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span>
                                                 <span class="n">absorption_model</span><span class="o">=</span><span class="s1">&#39;tbabs_abund_wilm&#39;</span><span class="p">,</span>
+                                                <span class="n">calc_avg_using_endpoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                                 <span class="n">nh</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>where (also see function docstring):</p>
+<p>where (also see function docstring ):</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">ebin_min</span></code>, <code class="docutils literal notranslate"><span class="pre">ebin_max</span></code> : lower, upper bin edges in <em>keV</em>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">absorption_model</span></code>: which absorption model from XSpec to apply. Valid options are ‘phabs’, ‘tbabs_abdund_wilm’</p>
@@ -113,16 +121,24 @@ If you want to calculate the absorption at a specific energy (not across a bin),
 </ul>
 </div></blockquote>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calc_avg_using_endpoints=False</span></code> :  Calculates the absorption in each bin by averaging all the absorption values that lie within each bin.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nh</span></code>: Hydrogen column density in units of 10 <sup>22</sup> cm <sup>-2</sup> used for your XSpec analysis</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nHDeabsorb</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_absorption</span>
+<p>To save the values to a table:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Get table of absorption values from nHDeabsorb&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nHDeabsorb</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_absorption</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pkg_resources</span>
+
 
 <span class="c1"># Another option: get the absorption values as table, using table which contains energies</span>
 <span class="n">fn_spec</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;nHDeabsorb&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_data/sed.dat&#39;</span><span class="p">)</span>
 <span class="n">absorb_for_spec</span> <span class="o">=</span> <span class="n">get_absorption</span><span class="o">.</span><span class="n">make_absorption_table</span><span class="p">(</span><span class="n">fn_sed_data</span><span class="o">=</span><span class="n">fn_spec</span><span class="p">,</span>
                                                     <span class="n">absorption_model</span><span class="o">=</span><span class="s1">&#39;tbabs_abund_wilm&#39;</span><span class="p">,</span>
                                                     <span class="n">nh</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
-                                                    <span class="n">fn_out</span><span class="o">=</span><span class="s1">&#39;../absorption_values.csv&#39;</span><span class="p">)</span>
+                                                    <span class="n">calc_avg_using_endpoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                                    <span class="n">fn_out</span><span class="o">=</span><span class="s1">&#39;absorption_values.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where (also see function docstring):</p>
@@ -146,8 +162,10 @@ If you want to calculate the absorption at a specific energy (not across a bin),
 </div></blockquote>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nh</span></code>: Hydrogen column density in units of 10 <sup>22</sup> cm <sup>-2</sup> used for your XSpec analysis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calc_avg_using_endpoints=False</span></code> :  Calculates the absorption in each bin by averaging all the absorption values that lie within each bin.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fn_out</span></code>:  filename of output data file which contains the energy bin centers (in keV) in the first column, and the energy bin width (in keV) in the second column, and the corresponding absorption component in the third and final column. This comma-separated file has explicit header: energy_keV,ebin_width_keV,absorption.</p></li>
 </ul>
+</section>
 </section>
 </section>
 

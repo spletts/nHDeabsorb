@@ -8,45 +8,31 @@ There are two ways to retrieve the absorption, use whichever works better with y
 * Retrieve the absorption values directly as an array with ``get_absorption.xspec_absorption_component``
 * Get the absorption values as a table with ``get_absorption.make_absorption_table``
 
-**Note**: XSpec computes the absorption in each energy bin by taking the average absorption of the bin edges. Thus, this script does the same.
-If you want to calculate the absorption at a specific energy (not across a bin), use ``get_absorption.interpolate_absorption``.
-
 Example
 -------
 
-If the package is installed (as in :ref:`Installing from source`):
+Package use
+~~~~~~~~~~~
+If the package is installed (as in :ref:`Installing from source`), to get a tn array of absorption values:
 
-.. code-block:: python
+.. literalinclude:: ../example_scripts/pkg_run_arr.py
+   :language: python
 
-    from nHDeabsorb import get_absorption
-
-    # One option: get the absorption values as array, using array of energies
-    absorb = get_absorption.xspec_absorption_component(ebin_min=[0.4, 0.5],
-                                                    ebin_max=[0.5, 0.6],
-                                                    absorption_model='tbabs_abund_wilm',
-                                                    nh=0.15)
-
-where (also see function docstring):
+where (also see function docstring ):
 
 * ``ebin_min``, ``ebin_max`` : lower, upper bin edges in *keV*.
 * ``absorption_model``: which absorption model from XSpec to apply. Valid options are 'phabs', 'tbabs_abdund_wilm'
 
     * 'phabs': XSpec's ``phabs`` command
     * 'tbabs_abdund_wilm': XSpec's ``tbabs`` command with ``abund wilm`` set. This is the photoelectric absorption component :math:`\exp(-\eta\sigma)` using the Tuebingen-Boulder ISM absorption model and ISM abundances from `wilm <https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract>`_.
+* ``calc_avg_using_endpoints=False`` :  Calculates the absorption in each bin by averaging all the absorption values that lie within each bin.
 * ``nh``: Hydrogen column density in units of 10 :sup:`22` cm :sup:`-2` used for your XSpec analysis
 
+To save the values to a table:
 
-.. code-block:: python
-
-  from nHDeabsorb import get_absorption
-
-  # Another option: get the absorption values as table, using table which contains energies
-  fn_spec = pkg_resources.resource_filename('nHDeabsorb', 'sample_data/sed.dat')
-  absorb_for_spec = get_absorption.make_absorption_table(fn_sed_data=fn_spec,
-                                                      absorption_model='tbabs_abund_wilm',
-                                                      nh=0.15,
-                                                      fn_out='../absorption_values.csv')
-
+.. literalinclude:: ../example_scripts/pkg_run_tbl.py
+   :language: python
+   
 where (also see function docstring):
 
 * ``fn_sed_data``: filename for SED data which must have:
@@ -60,5 +46,5 @@ where (also see function docstring):
     * 'phabs': XSpec's ``phabs`` command
     * 'tbabs_abdund_wilm': XSpec's ``tbabs`` command with ``abund wilm`` set. This is the photoelectric absorption component :math:`\exp(-\eta\sigma)` using the Tuebingen-Boulder ISM absorption model and ISM abundances from `wilm <https://ui.adsabs.harvard.edu/abs/2000ApJ...542..914W/abstract>`_.
 * ``nh``: Hydrogen column density in units of 10 :sup:`22` cm :sup:`-2` used for your XSpec analysis
-
+* ``calc_avg_using_endpoints=False`` :  Calculates the absorption in each bin by averaging all the absorption values that lie within each bin.
 * ``fn_out``:  filename of output data file which contains the energy bin centers (in keV) in the first column, and the energy bin width (in keV) in the second column, and the corresponding absorption component in the third and final column. This comma-separated file has explicit header: energy_keV,ebin_width_keV,absorption.
