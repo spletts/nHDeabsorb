@@ -17,3 +17,5 @@ This is required for blazar SED modeling codes such as `Bjet_MCMC <https://bjet-
    installation
    usage
    modules
+   validation
+   

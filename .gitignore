@@ -3,10 +3,11 @@ tests/
 *logging
 *csv
 dist/
-src/nHDeabsorb.egg*
+src/nHDeabsorb/nHDeabsorb.egg*
 __pycache__/
 *__pycache__/
 ignore/
 .gitignore
 *csv
 _*
+src/nHDeabsorb.egg-info/

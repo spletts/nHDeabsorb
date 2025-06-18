@@ -6,19 +6,20 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modules &mdash; nHDeabsorb 0.1.0 documentation</title>
+  <title>Modules &mdash; nHDeabsorb 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/documentation_options.js?v=938c9ccc"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Validation" href="validation.html" />
     <link rel="prev" title="Usage" href="usage.html" /> 
 </head>
 
@@ -49,12 +50,14 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-nHDeabsorb.get_absorption">get_absorption.py</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#nHDeabsorb.get_absorption.interpolate_absorption"><code class="docutils literal notranslate"><span class="pre">interpolate_absorption()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nHDeabsorb.get_absorption.average_absorption_per_bin"><code class="docutils literal notranslate"><span class="pre">average_absorption_per_bin()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#nHDeabsorb.get_absorption.xspec_absorption_component"><code class="docutils literal notranslate"><span class="pre">xspec_absorption_component()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#nHDeabsorb.get_absorption.make_absorption_table"><code class="docutils literal notranslate"><span class="pre">make_absorption_table()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
 </ul>
 
         </div>
@@ -115,15 +118,15 @@ Valid options:</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nHDeabsorb.get_absorption.xspec_absorption_component">
-<span class="sig-prename descclassname"><span class="pre">nHDeabsorb.get_absorption.</span></span><span class="sig-name descname"><span class="pre">xspec_absorption_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebin_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebin_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absorption_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.101</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nHDeabsorb.get_absorption.xspec_absorption_component" title="Link to this definition"></a></dt>
-<dd><p>Calculate the absorption value that XSpec uses in each energy bin, which is the average of the absorption
-at the bin edges. The absorption outside the energy range in the absorption table (<code class="docutils literal notranslate"><span class="pre">fn_abs</span></code>) is set to 1 (no absorption).</p>
+<dt class="sig sig-object py" id="nHDeabsorb.get_absorption.average_absorption_per_bin">
+<span class="sig-prename descclassname"><span class="pre">nHDeabsorb.get_absorption.</span></span><span class="sig-name descname"><span class="pre">average_absorption_per_bin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebin_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebin_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absorption_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.101</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nHDeabsorb.get_absorption.average_absorption_per_bin" title="Link to this definition"></a></dt>
+<dd><p>Calculate the absorption value by averaging the absorption in each energy bin using all points in the table <code class="docutils literal notranslate"><span class="pre">fn_abs</span></code> which fall in the bin.
+The absorption outside the energy range in the absorption table (<code class="docutils literal notranslate"><span class="pre">fn_abs</span></code>) is set to 1 (no absorption).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ebin_min</strong> (<em>array_like</em><em>[</em><em>float</em><em>] or </em><em>float</em>) – Lower bin edge(s) in keV</p></li>
-<li><p><strong>ebin_max</strong> (<em>array_like</em><em>[</em><em>float</em><em>]  or </em><em>float</em>) – Upper bin edge(s) in keV</p></li>
+<li><p><strong>ebin_min</strong> (<em>array_like</em><em>[</em><em>float</em><em>]</em>) – Lower bin edge(s) in keV</p></li>
+<li><p><strong>ebin_max</strong> (<em>array_like</em><em>[</em><em>float</em><em>]</em>) – Upper bin edge(s) in keV</p></li>
 <li><p><strong>absorption_model</strong> (<em>str</em>) – <p>Which absorption model to use in the calculation.
 Valid options:</p>
 <ul>
@@ -137,17 +140,51 @@ The default of nh=0.101 was used to create the tables in absorption_tables/.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>abs_bin_avg</strong> – Absorption in the energy bin(s) [<code class="docutils literal notranslate"><span class="pre">ebin_min</span></code>, <code class="docutils literal notranslate"><span class="pre">ebin_max</span></code>], as calculated by XSpec (averaged at bin edges)</p>
+<dd class="field-even"><p><strong>abs_avg_over_bin</strong> – Absorption in the energy bin(s) [<code class="docutils literal notranslate"><span class="pre">ebin_min</span></code>, <code class="docutils literal notranslate"><span class="pre">ebin_max</span></code>], as calculated averaging the absorption at all points within the energy range in the table <code class="docutils literal notranslate"><span class="pre">fn_abs</span></code></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>array_like[float] or float</p>
+<dd class="field-odd"><p>array_like[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nHDeabsorb.get_absorption.xspec_absorption_component">
+<span class="sig-prename descclassname"><span class="pre">nHDeabsorb.get_absorption.</span></span><span class="sig-name descname"><span class="pre">xspec_absorption_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebin_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebin_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absorption_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_avg_using_endpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.101</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nHDeabsorb.get_absorption.xspec_absorption_component" title="Link to this definition"></a></dt>
+<dd><p>Calculate the absorption value in each energy bin. Calculated according to <code class="docutils literal notranslate"><span class="pre">calc_avg_using_endpoints</span></code> (see docstring)).
+The absorption outside the energy range in the absorption table (<code class="docutils literal notranslate"><span class="pre">fn_abs</span></code>) is set to 1 (no absorption).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ebin_min</strong> (<em>array_like</em><em>[</em><em>float</em><em>]</em>) – Lower bin edge(s) in keV</p></li>
+<li><p><strong>ebin_max</strong> (<em>array_like</em><em>[</em><em>float</em><em>]</em>) – Upper bin edge(s) in keV</p></li>
+<li><p><strong>absorption_model</strong> (<em>str</em>) – <p>Which absorption model to use in the calculation.
+Valid options:</p>
+<ul>
+<li><p>tbabs_abdund_wilm</p></li>
+<li><p>phabs</p></li>
+</ul>
+<p>The options correspond to the XSpec commands <code class="docutils literal notranslate"><span class="pre">tbabs,</span> <span class="pre">abund</span> <span class="pre">wilm</span></code> and <code class="docutils literal notranslate"><span class="pre">phabs</span></code>, respectively.</p>
+</p></li>
+<li><p><strong>calc_avg_using_endpoints</strong> (<em>bool</em>) – If True, calculates the absorption in each bin by averaging the absorption at the endpoints of each bin.
+The absorption at the specific endpoint energy is evaluated by interpolating a table <code class="docutils literal notranslate"><span class="pre">fn_abs</span></code>. This is how XSpec calculates it.
+If False, calculates the absorption in each bin by averaging all the absorption values that lie within each bin. There is no interpolation in this case.</p></li>
+<li><p><strong>nh</strong> (<em>float</em>) – Hydrogen column density in <strong>units of 10^22 atoms/cm^2</strong>.
+The default of nh=0.101 was used to create the tables in absorption_tables/.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>abs_bin_avg</strong> – Absorption in the energy bin(s) [<code class="docutils literal notranslate"><span class="pre">ebin_min</span></code>, <code class="docutils literal notranslate"><span class="pre">ebin_max</span></code>].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like[float]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="nHDeabsorb.get_absorption.make_absorption_table">
-<span class="sig-prename descclassname"><span class="pre">nHDeabsorb.get_absorption.</span></span><span class="sig-name descname"><span class="pre">make_absorption_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn_sed_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absorption_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nHDeabsorb.get_absorption.make_absorption_table" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">nHDeabsorb.get_absorption.</span></span><span class="sig-name descname"><span class="pre">make_absorption_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn_sed_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absorption_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_avg_using_endpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nHDeabsorb.get_absorption.make_absorption_table" title="Link to this definition"></a></dt>
 <dd><p>Create a table of the absorption values corresponding to the energy bins in <code class="docutils literal notranslate"><span class="pre">fn_sed_data</span></code>.
 Save table as <code class="docutils literal notranslate"><span class="pre">fn_out</span></code>.
 The absorption depends on <code class="docutils literal notranslate"><span class="pre">absorption_model</span></code> and <code class="docutils literal notranslate"><span class="pre">nh</span></code>.</p>
@@ -171,6 +208,9 @@ Valid options:</p>
 </ul>
 <p>The options correspond to the XSpec commands <code class="docutils literal notranslate"><span class="pre">tbabs,</span> <span class="pre">abund</span> <span class="pre">wilm</span></code> and <code class="docutils literal notranslate"><span class="pre">phabs</span></code>, respectively.</p>
 </p></li>
+<li><p><strong>calc_avg_using_endpoints</strong> (<em>bool</em>) – If True, calculates the absorption in each bin by averaging the absorption at the endpoints of each bin.
+The absorption at the specific endpoint energy is evaluated by interpolating a table <code class="docutils literal notranslate"><span class="pre">fn_abs</span></code>. This is how XSpec calculates it.
+If False, calculates the absorption in each bin by averaging all the absorption values that lie within each bin. There is no interpolation in this case.</p></li>
 <li><p><strong>nh</strong> (<em>float</em>) – Hydrogen column density in <strong>units of 10^22 atoms/cm^2</strong></p></li>
 <li><p><strong>fn_out</strong> (<em>str</em>) – Filename for output data table which has explicit headers <cite>HDR_OUT</cite>: energy_keV,ebin_width_keV,absorption</p></li>
 </ul>
@@ -192,6 +232,7 @@ Valid options:</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="validation.html" class="btn btn-neutral float-right" title="Validation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
