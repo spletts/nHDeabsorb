@@ -52,68 +52,6 @@ def interpolate_absorption(en, fn_abs):
     return absorb
 
 
-def average_absorption_per_bin(ebin_min, ebin_max, absorption_model, nh=0.101):
-    """Calculate the absorption value by averaging the absorption in each energy bin using all points in the table ``fn_abs`` which fall in the bin. 
-    The absorption outside the energy range in the absorption table (``fn_abs``) is set to 1 (no absorption).
-
-    Parameters
-    ----------
-    ebin_min : array_like[float]
-        Lower bin edge(s) in keV
-    ebin_max : array_like[float]
-        Upper bin edge(s) in keV
-    absorption_model : str
-        Which absorption model to use in the calculation.
-        Valid options: 
-
-        - tbabs_abdund_wilm
-        - phabs
-
-        The options correspond to the XSpec commands ``tbabs, abund wilm`` and ``phabs``, respectively.
-    nh : float
-        Hydrogen column density in **units of 10^22 atoms/cm^2**.
-        The default of nh=0.101 was used to create the tables in absorption_tables/.
-
-    Returns
-    -------
-    abs_avg_over_bin : array_like[float]
-        Absorption in the energy bin(s) [``ebin_min``, ``ebin_max``], as calculated averaging the absorption at all points within the energy range in the table ``fn_abs``
-    """
-
-    try:
-        fn_abs = pkg_resources.resource_filename('nHDeabsorb', os.path.join('absorption_tables', ABSORPTION_DICT[absorption_model]))
-    except OSError:  # file not found
-        logging.warning(f"File {fn_abs} not found with pkg_resources")
-        print(f"File {fn_abs} not found with pkg_resources")
-        fn_abs = os.path.join('absorption_tables', ABSORPTION_DICT[absorption_model])
-        logging.info(f"Looking for {fn_abs}")
-
-    logging.info(f'Averaging table {fn_abs}')
-
-    dat = np.genfromtxt(fn_abs, skip_header=1)
-    tbl_energy = dat[:, 0]
-
-    abs_avg_over_bin = []
-
-    # Average in each bin
-    for i, emin in enumerate(ebin_min):
-        emax = ebin_max[i]
-        # Ensure energy is covered by the table
-        if emin < min(tbl_energy) or emax > max(tbl_energy):
-            abs_avg_over_bin.append(1)
-            logging.warning(f"Energy bin [{ebin_min[i]}, {ebin_max[i]}] keV lies outside the ranges in {fn_abs}, so the absorption is set equal to 1 (NO absorption).")
-        else:
-            dat_mask = dat[(dat[:, 0] > emin) & (dat[:, 0] <= emax)]
-            absorb_mask = dat_mask[:, 1]
-            abs_avg_over_bin.append(np.average(absorb_mask))
-
-    # absorb2 = absorb1^(nH2/nH1)
-    if nh != 0.101:
-        abs_avg_over_bin = np.array(abs_avg_over_bin) ** (nh / 0.101)
-
-    return abs_avg_over_bin
-
-
 def xspec_absorption_component(ebin_min, ebin_max, absorption_model, calc_avg_using_endpoints=False, nh=0.101):
     """Calculate the absorption value in each energy bin. Calculated according to ``calc_avg_using_endpoints`` (see docstring)).
     The absorption outside the energy range in the absorption table (``fn_abs``) is set to 1 (no absorption).
